@@ -14,6 +14,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 (async () => {
+  // 数据库中因children太长而缺少的方剂
   let allData = [
     {
       name: '半夏散',

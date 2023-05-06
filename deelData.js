@@ -46,8 +46,11 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '食少')
       // lodash.includes(item.children, '伤寒论')
 
-      lodash.includes(item.children, '心下痞硬')
+      // lodash.includes(item.children, '心下痞硬')
       // lodash.includes(item.children, '食少')
+
+      lodash.includes(item.children, '呃逆') &&
+      lodash.includes(item.children, '胃热')
 
       // lodash.includes(item.children, '困倦') &&
       // lodash.includes(item.children, '食少') &&

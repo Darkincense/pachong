@@ -55,8 +55,8 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '食少')
 
-      lodash.includes(item.children, '附子') &&
-      lodash.includes(item.children, '活血化瘀')
+      // lodash.includes(item.children, '附子') &&
+      // lodash.includes(item.children, '活血化瘀')
 
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '活血化瘀')
@@ -66,6 +66,26 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '胃热')
 
       // lodash.includes(item.children, '腹中结块')
+
+      // lodash.includes(item.children, '苍术') &&
+      // lodash.includes(item.children, '白术') &&
+      // lodash.includes(item.children, '茯苓') &&
+      // lodash.includes(item.children, '陈皮') &&
+      // lodash.includes(item.children, '厚朴') &&
+      // lodash.includes(item.children, '泽泻') &&
+      // lodash.includes(item.children, '人参') &&
+      // lodash.includes(item.children, '麦门冬')
+      
+      
+      
+      lodash.includes(item.children, '硫磺')
+      // lodash.includes(item.children, '活血化瘀')
+
+
+
+
+
+
     ) {
       newData.push(item.name);
     }

@@ -6,15 +6,20 @@ const mysql = require('mysql');
 const mainData = require('./mainDataFile.json');
 
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  // host: '127.0.0.1',
+  host: '124.222.84.37',
   user: 'root',
-  password: 'root123456',
-  database: 'test'
+  // password: 'root123456',
+  password: '123456!@#Qwe',
+  database: 'huilaoye'
 });
-connection.connect();
-
+try {
+  connection.connect();
+  console.log('连接成功');
+} catch(err) { }
 (async () => {
   // 数据库中因children太长而缺少的方剂
+  // [{"prescription":"生地、当归、川芎、红花、牡丹皮、槟榔、蓬术、香附、厚朴、鳖甲（醋炙）、穿山甲。","making":"上为末，用益母草汁1升，青蒿1升，生姜3分，童子小便1升，于银器中以慢火熬成膏，为丸，如梧桐子大。","functional_indications":"疟母，结块在胁下。"}]
   let allData = [
     {
       name: '半夏散',
@@ -328,86 +333,141 @@ connection.connect();
       }
     });
   }
-  for1:
-  for (let index = 0; index < allData.length; index++) {
-    try {
-      const itemData = allData[index];
-      console.log(`运行中: ${index + 1}/${allData.length}`);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await newPage.goto(itemData.href);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const itemUl = await newPage.waitForSelector('#content');
-      const curData = await itemUl.evaluate(async (e) => {
 
-        const songList = Array.from(e.children);
-        const tempArr = [];
-        const includes = (clo, item) => {
-          if (clo.indexOf(item) > -1) return true;
-          return false;
-        }
-
-        const tempObj = {}
-        for (let idx0 = 0; idx0 < songList.length; idx0++) {
-          const itemSon = songList[idx0];
-          // console.log('=================');
-          // console.log(itemSon.childNodes);
-          // console.log(itemSon.children[0].innerText);
-          // console.log('=================');
-          for (let idx1 = 0; idx1 < itemSon.children.length; idx1++) {
-            const childItem = itemSon.children[idx1];
-            // const childNode = itemSon.childNodes[idx1];
-            const title = itemSon.children[0].innerText;
-
-            const text = childItem.children.length > 1 && childItem.children[1] && childItem.children[1].innerText ? childItem.children[1].innerText : '';
-            // console.log('title', title)
-            if(title && title.indexOf('伤寒论') > -1 || idx1 <= 2 ) {
-              if (includes(childItem.className, 'pinyin_name_phonetic')) {
-                tempObj['pinyin_name_phonetic'] = text;
-              }
-              if (includes(childItem.className, 'alias')) {
-                tempObj['alias'] = text;
-              }
-              if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
-                tempObj['prescription'] = text;
-              }
-              if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
-                tempObj['making'] = text;
-              }
-              if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
-                tempObj['functional_indications'] = text;
-              }
-              if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
-                tempObj['usage'] = text;
-              }
-              if (includes(childItem.className, 'care')) {
-                tempObj['care'] = text;
-              }
-              if (includes(childItem.className, 'excerpt')) {
-                tempObj['excerpt'] = text;
-              }
-              if (includes(childItem.className, 'pharmacological_action')) {
-                tempObj['pharmacological_action'] = text;
-              }
-              if (includes(childItem.className, 'remark')) {
-                tempObj['remark'] = text;
-              }
-            }
-          }
-        }
-        if(Object.keys(tempObj).length > 0) tempArr.push(tempObj);
-        return tempArr;
-      })
-      allData[index]['children'] = JSON.stringify(curData);
-      // insertData([index + 1, allData[index]['name'], allData[index]['href'], allData[index]['children']]);
-      insertData([allData[index]['index_id'], allData[index]['name'], allData[index]['href'], allData[index]['children']]);
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      await newPage.goBack();
-    } catch (error) { }
-    // console.log(allData);
-    // if(index === 8189) break for1;
+  // 修改数据
+  const changeData = (changeSqlParams) => {
+    const modSql = 'UPDATE fangji SET children = ? WHERE index_id = ?';
+    //改
+    connection.query(modSql, changeSqlParams, (err, result) => {
+      if(err){
+        console.log('[UPDATE ERROR] - ',err.message);
+        return;
+      }
+    });
   }
 
-  console.log('保存结束');
+  // 查询数据
+  const searchData = () => {
+    const sql = 'SELECT * FROM fangji WHERE index_id = 850';
+    //查
+    connection.query(sql, (err, result) => {
+      if(err){
+        console.log('[SELECT ERROR] - ',err.message);
+        return;
+      }
+      console.log(JSON.stringify(result));
+    });
+  }
+
+  searchData();
+
+  const initData = async () => {
+    for1:
+    for (let index = 0; index < allData.length; index++) {
+      try {
+        const itemData = allData[index];
+        console.log(`运行中: ${index + 1}/${allData.length}`);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await newPage.goto(itemData.href);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const itemUl = await newPage.waitForSelector('#content');
+        const curData = await itemUl.evaluate(async (e) => {
+  
+          const songList = Array.from(e.children);
+          const tempArr = [];
+          const includes = (clo, item) => {
+            if (clo.indexOf(item) > -1) return true;
+            return false;
+          }
+  
+          for (let idx0 = 0; idx0 < songList.length; idx0++) {
+            const itemSon = songList[idx0];
+            const tempObj = {};
+            // console.log('=================');
+            // console.log(itemSon.childNodes);
+            // console.log(itemSon.children[0].innerText);
+            // console.log('=================');
+            for (let idx1 = 0; idx1 < itemSon.children.length; idx1++) {
+              const childItem = itemSon.children[idx1];
+              // const childNode = itemSon.childNodes[idx1];
+              const title = itemSon.children[0].innerText;
+  
+              const text = childItem.children.length > 1 && childItem.children[1] && childItem.children[1].innerText ? childItem.children[1].innerText : '';
+              // console.log('title', title)
+  
+              // if(idx1 <= 4 ) {
+  
+                // if (includes(childItem.className, 'pinyin_name_phonetic')) {
+                //   tempObj['pinyin_name_phonetic'] = text;
+                // }
+                // if (includes(childItem.className, 'alias')) {
+                //   tempObj['alias'] = text;
+                // }
+                if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
+                  tempObj['prescription'] = text;
+                }
+                if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
+                  tempObj['making'] = text;
+                }
+                if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
+                  tempObj['functional_indications'] = text;
+                }
+                if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
+                  tempObj['usage'] = text;
+                }
+                // if (includes(childItem.className, 'care')) {
+                //   tempObj['care'] = text;
+                // }
+                // if (includes(childItem.className, 'excerpt')) {
+                //   tempObj['excerpt'] = text;
+                // }
+                // if (includes(childItem.className, 'pharmacological_action')) {
+                //   tempObj['pharmacological_action'] = text;
+                // }
+                // if (includes(childItem.className, 'remark')) {
+                //   tempObj['remark'] = text;
+                // }
+  
+              // }
+              
+            }
+              
+            tempArr.push(tempObj);
+          }
+          return tempArr;
+        })
+  
+        // children太长临时添加==
+        const tempNewArr = [];
+        for (let index = 0; index < curData.length; index++) {
+          if(index < 8) {
+            const item = curData[index];
+            tempNewArr.push(item);
+          }
+        }
+        allData[index]['children'] = JSON.stringify(tempNewArr);
+        // children太长临时添加==
+  
+        // allData[index]['children'] = JSON.stringify(curData);
+        // console.log(allData[index]['children'].length);
+        // 插入新数据
+        // insertData([index + 1, allData[index]['name'], allData[index]['href'], allData[index]['children']]);
+        // insertData([allData[index]['index_id'], allData[index]['name'], allData[index]['href'], allData[index]['children']]);
+        // 修改旧数据
+        changeData([allData[index]['children'], allData[index]['index_id']]);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await newPage.goBack();
+      } catch (error) { 
+        console.log('error');
+        console.log(error);
+      }
+      // console.log(allData);
+      // if(index === 8189) break for1;
+    }
+  }
+
+  // await initData();
+
   await browser.close();
 
 })()

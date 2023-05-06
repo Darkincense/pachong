@@ -52,8 +52,14 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '利水') &&
       // lodash.includes(item.children, '消肿')
 
-      lodash.includes(item.children, '半夏') &&
-      lodash.includes(item.children, '食少')
+      // lodash.includes(item.children, '半夏') &&
+      // lodash.includes(item.children, '食少')
+
+      lodash.includes(item.children, '附子') &&
+      lodash.includes(item.children, '活血化瘀')
+
+      // lodash.includes(item.children, '半夏') &&
+      // lodash.includes(item.children, '活血化瘀')
 
       // lodash.includes(item.children, '困倦') &&
       // lodash.includes(item.children, '食少') &&

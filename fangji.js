@@ -134,7 +134,7 @@ try {
     for (let index = 0; index < allData.length; index++) {
       try {
         // 数据库最后一个id的值
-        if(index >= 2467) {
+        if(index >= 6683) {
           const itemData = allData[index];
           lodash.set(itemData, 'id', `${index+1}`);
           // 方剂插入数据库

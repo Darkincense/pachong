@@ -281,7 +281,7 @@ connection.connect();
             }
             if (includes(childItem.className, 'compound')) {
               // 复方
-              // tempObj['compound'] = text;
+              tempObj['compound'] = text;
             }
             if (includes(childItem.className, 'discuss')) {
               // 各家论述

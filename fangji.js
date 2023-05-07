@@ -133,95 +133,98 @@ try {
     for1:
     for (let index = 0; index < allData.length; index++) {
       try {
-        const itemData = allData[index];
-        lodash.set(itemData, 'id', `${index+1}`);
-        // 方剂插入数据库
-        await insertData(itemData, index, 'INSERT INTO fangji SET ?');
-        console.log(`运行中: ${index + 1}/${allData.length}`);
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        await newPage.goto(itemData.href);
-        await new Promise((resolve) => setTimeout(resolve, 300));
-        const itemUl = await newPage.waitForSelector('#content');
-        // 详细数据
-        const curData = await itemUl.evaluate(async (e) => {
-  
-          const songList = Array.from(e.children);
-          const tempArr = [];
-          const includes = (clo, item) => {
-            if (clo.indexOf(item) > -1) return true;
-            return false;
-          }
-          for (let idx0 = 0; idx0 < songList.length; idx0++) {
-            const itemSon = songList[idx0];
-            const tempObj = {
-              name: "",
-              pinyin_name_phonetic: "",
-              alias: "",
-              prescription: "",
-              making: "",
-              functional_indications: "",
-              usage: "",
-              care: "",
-              excerpt: "",
-              pharmacological_action: "",
-              remark: "",
-            };
-            lalala:
-            for (let idx1 = 0; idx1 < itemSon.children.length; idx1++) {
-              const childItem = itemSon.children[idx1];
-              const text = childItem.children.length > 1 && childItem.children[1] && childItem.children[1].innerText ? childItem.children[1].innerText : '';
-
-              if(childItem['nodeName'] === 'H2') {
-                tempObj['name'] = childItem.innerText;
-              }
-              if (includes(childItem.className, 'pinyin_name_phonetic')) {
-                tempObj['pinyin_name_phonetic'] = text;
-              }
-              if (includes(childItem.className, 'alias')) {
-                tempObj['alias'] = text;
-              }
-              if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
-                tempObj['prescription'] = text;
-              }
-              if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
-                tempObj['making'] = text;
-              }
-              if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
-                tempObj['functional_indications'] = text;
-              }
-              if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
-                tempObj['usage'] = text;
-              }
-              if (includes(childItem.className, 'care')) {
-                tempObj['care'] = text;
-              }
-              if (includes(childItem.className, 'excerpt')) {
-                tempObj['excerpt'] = text;
-              }
-              if (includes(childItem.className, 'pharmacological_action')) {
-                tempObj['pharmacological_action'] = text;
-              }
-              if (includes(childItem.className, 'remark')) {
-                tempObj['remark'] = text;
-              }
+        // 数据库最后一个id的值
+        if(index >= 2467) {
+          const itemData = allData[index];
+          lodash.set(itemData, 'id', `${index+1}`);
+          // 方剂插入数据库
+          await insertData(itemData, index, 'INSERT INTO fangji SET ?');
+          console.log(`运行中: ${index + 1}/${allData.length}`);
+          await new Promise((resolve) => setTimeout(resolve, 600));
+          await newPage.goto(itemData.href);
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          const itemUl = await newPage.waitForSelector('#content');
+          // 详细数据
+          const curData = await itemUl.evaluate(async (e) => {
+    
+            const songList = Array.from(e.children);
+            const tempArr = [];
+            const includes = (clo, item) => {
+              if (clo.indexOf(item) > -1) return true;
+              return false;
             }
-              
-            tempArr.push(tempObj);
+            for (let idx0 = 0; idx0 < songList.length; idx0++) {
+              const itemSon = songList[idx0];
+              const tempObj = {
+                name: "",
+                pinyin_name_phonetic: "",
+                alias: "",
+                prescription: "",
+                making: "",
+                functional_indications: "",
+                usage: "",
+                care: "",
+                excerpt: "",
+                pharmacological_action: "",
+                remark: "",
+              };
+              lalala:
+              for (let idx1 = 0; idx1 < itemSon.children.length; idx1++) {
+                const childItem = itemSon.children[idx1];
+                const text = childItem.children.length > 1 && childItem.children[1] && childItem.children[1].innerText ? childItem.children[1].innerText : '';
+  
+                if(childItem['nodeName'] === 'H2') {
+                  tempObj['name'] = childItem.innerText;
+                }
+                if (includes(childItem.className, 'pinyin_name_phonetic')) {
+                  tempObj['pinyin_name_phonetic'] = text;
+                }
+                if (includes(childItem.className, 'alias')) {
+                  tempObj['alias'] = text;
+                }
+                if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
+                  tempObj['prescription'] = text;
+                }
+                if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
+                  tempObj['making'] = text;
+                }
+                if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
+                  tempObj['functional_indications'] = text;
+                }
+                if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
+                  tempObj['usage'] = text;
+                }
+                if (includes(childItem.className, 'care')) {
+                  tempObj['care'] = text;
+                }
+                if (includes(childItem.className, 'excerpt')) {
+                  tempObj['excerpt'] = text;
+                }
+                if (includes(childItem.className, 'pharmacological_action')) {
+                  tempObj['pharmacological_action'] = text;
+                }
+                if (includes(childItem.className, 'remark')) {
+                  tempObj['remark'] = text;
+                }
+              }
+                
+              tempArr.push(tempObj);
+            }
+            return tempArr;
+          })
+          // 插入子数据
+          for (let index1 = 0; index1 < curData.length; index1++) {
+            const itemChildren = curData[index1];
+            if(!itemChildren.name) {
+              lodash.set(itemChildren, 'name', itemData.name);
+            }
+            lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
+            lodash.set(itemChildren, 'p_id', `${index+1}`);
+            await insertData(itemChildren, index1, 'INSERT INTO fangji_children SET ?');
+            console.log('插入子项成功'+`${index+1}-${index1+1}`);
           }
-          return tempArr;
-        })
-        // 插入子数据
-        for (let index1 = 0; index1 < curData.length; index1++) {
-          const itemChildren = curData[index1];
-          if(!itemChildren.name) {
-            lodash.set(itemChildren, 'name', itemData.name);
-          }
-          lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
-          lodash.set(itemChildren, 'p_id', `${index+1}`);
-          await insertData(itemChildren, index1, 'INSERT INTO fangji_children SET ?');
-          console.log('插入子项成功'+`${index+1}-${index1+1}`);
-        }
-        await newPage.goBack();
+          await newPage.goBack();
+        };
       } catch (error) { 
         console.log('error');
         console.log(error);
@@ -231,6 +234,6 @@ try {
 
   await initData();
 
-  // await browser.close();
+  await browser.close();
 
 })()

@@ -108,3 +108,245 @@ connection.end();
 // 茯苓9克 芍药9克 白术6克 生姜（切）9克 附子5克（炮）  （真武汤）
 
 
+// [
+//   {
+//     name: '半夏散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/banxiasan/index.html',
+//     index_id: 851
+//   },
+//   {
+//     name: '半夏散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/banxiasan/index.html',
+//     index_id: 852
+//   },
+  // {
+  //   name: '半夏汤',
+  //   href: 'https://www.zysj.com.cn/zhongyaofang/banxiatang/index.html',
+  //   index_id: 867
+  // },
+//   {
+//     name: '槟榔丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/binglangwan/index.html',
+//     index_id: 1281
+//   },
+//   {
+//     name: '槟榔散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/binglangsan/index.html',
+//     index_id: 1288
+//   },
+//   {
+//     name: '白术丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/baishuwan/index.html',
+//     index_id: 1426
+//   },
+//   {
+//     name: '白术散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/baishusan/index.html',
+//     index_id: 1446
+//   },
+//   {
+//     name: '白术汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/baishutang/index.html',
+//     index_id: 1450
+//   },
+//   {
+//     name: '鳖甲丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/biejiawan/index.html',
+//     index_id: 2771
+//   },
+//   {
+//     name: '鳖甲散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/biejiasan/index.html',
+//     index_id: 2781
+//   },
+//   {
+//     name: '柴胡散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/chaihusan/index.html',
+//     index_id: 3682
+//   },
+//   {
+//     name: '柴胡汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/chaihutang/index.html',
+//     index_id: 3703
+//   },
+//   {
+//     name: '沉香散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/chenxiangsan/index.html',
+//     index_id: 3948
+//   },
+//   {
+//     name: '赤茯苓散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/chifulingsan/index.html',
+//     index_id: 4699
+//   },
+//   {
+//     name: '丁香散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/dingxiangsan/index.html',
+//     index_id: 5151
+//   },
+//   {
+//     name: '地黄丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/dihuangwan/index.html',
+//     index_id: 5519
+//   },
+//   {
+//     name: '大黄丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/daihuangwan/index.html',
+//     index_id: 6252
+//   },
+//   {
+//     name: '大黄散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/daihuangsan/index.html',
+//     index_id: 6264
+//   },
+//   {
+//     name: '大黄汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/daihuangtang/index.html',
+//     index_id: 6275
+//   },
+//   {
+//     name: '当归散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/dangguisan/index.html',
+//     index_id: 6716
+//   },
+//   {
+//     name: '当归散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/dangguisan/index.html',
+//     index_id: 6717
+//   },
+//   {
+//     name: '当归汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/dangguitang/index.html',
+//     index_id: 6727
+//   },
+//   {
+//     name: '独活散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/duhuosan/index.html',
+//     index_id: 7117
+//   },
+//   {
+//     name: '阿胶散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/ejiaosan/index.html',
+//     index_id: 8079
+//   },
+//   {
+//     name: '茯苓汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/fulingtang/index.html',
+//     index_id: 8917
+//   },
+//   {
+//     name: '防风散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/fangfengsan/index.html',
+//     index_id: 9112
+//   },
+//   {
+//     name: '防风汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/fangfengtang/index.html',
+//     index_id: 9123
+//   },
+//   {
+//     name: '防风汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/fangfengtang/index.html',
+//     index_id: 9124
+//   },
+//   {
+//     name: '附子散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/fuzisan/index.html',
+//     index_id: 9218
+//   },
+//   {
+//     name: '厚朴散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/houposan/index.html',
+//     index_id: 11133
+//   },
+//   {
+//     name: '寒凉降火汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/hanliangjianghuotang/index.html',
+//     index_id: 11557
+//   },
+//   {
+//     name: '诃黎勒丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/helilewan/index.html',
+//     index_id: 12713
+//   },
+//   {
+//     name: '诃黎勒散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/helilesan/index.html',
+//     index_id: 12715
+//   },
+//   {
+//     name: '黄耆丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huangqiwan/index.html',
+//     index_id: 12943
+//   },
+//   {
+//     name: '黄耆散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huangqisan/index.html',
+//     index_id: 12982
+//   },
+//   {
+//     name: '黄耆汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huangqitang/index.html',
+//     index_id: 12992
+//   },
+//   {
+//     name: '黄芩汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huangqintang/index.html',
+//     index_id: 13079
+//   },
+//   {
+//     name: '黄连丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huanglianwan/index.html',
+//     index_id: 13158
+//   },
+//   {
+//     name: '黄连散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/huangliansan/index.html',
+//     index_id: 13191
+//   },
+//   {
+//     name: '加味四物汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/jiaweisiwutang/index.html',
+//     index_id: 14564
+//   },
+//   {
+//     name: '羚羊角散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/lingyangjiaosan/index.html',
+//     index_id: 19142
+//   },
+//   {
+//     name: '羚羊角汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/lingyangjiaotang/index.html',
+//     index_id: 19143
+//   },
+//   {
+//     name: '芦荟丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/luhuiwan/index.html',
+//     index_id: 19239
+//   },
+//   {
+//     name: '鹿茸丸',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/lurongwan/index.html',
+//     index_id: 19705
+//   },
+//   {
+//     name: '麦门冬汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/maimendongtang/index.html',
+//     index_id: 20354
+//   },
+//   {
+//     name: '麦门冬汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/maimendongtang/index.html',
+//     index_id: 20355
+//   },
+//   {
+//     name: '麻黄散',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/mahuangsan/index.html',
+//     index_id: 20459
+//   },
+//   {
+//     name: '麻黄汤',
+//     href: 'https://www.zysj.com.cn/zhongyaofang/mahuangtang/index.html',
+//     index_id: 20480
+//   }
+// ];

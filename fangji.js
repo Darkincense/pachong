@@ -3,7 +3,7 @@ const fs = require('fs');
 const lodash = require('lodash');
 const readline = require('readline');
 const mysql = require('mysql');
-const mainData = require('./mainDataFile.json');
+const mainData = require('./fangji.json');
 
 const connection = mysql.createConnection({
   // host: '127.0.0.1',
@@ -11,257 +11,20 @@ const connection = mysql.createConnection({
   user: 'root',
   // password: 'root123456',
   password: '123456!@#Qwe',
-  database: 'huilaoye'
+  database: 'huilaoye',
+  multipleStatements: true
 });
 try {
   connection.connect();
   console.log('连接成功');
 } catch(err) { }
 (async () => {
-  // 数据库中因children太长而缺少的方剂
-  // [{"prescription":"生地、当归、川芎、红花、牡丹皮、槟榔、蓬术、香附、厚朴、鳖甲（醋炙）、穿山甲。","making":"上为末，用益母草汁1升，青蒿1升，生姜3分，童子小便1升，于银器中以慢火熬成膏，为丸，如梧桐子大。","functional_indications":"疟母，结块在胁下。"}]
-  let allData = [
-    {
-      name: '半夏散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/banxiasan/index.html',
-      index_id: 851
-    },
-    {
-      name: '半夏散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/banxiasan/index.html',
-      index_id: 852
-    },
-    {
-      name: '半夏汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/banxiatang/index.html',
-      index_id: 867
-    },
-    {
-      name: '槟榔丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/binglangwan/index.html',
-      index_id: 1281
-    },
-    {
-      name: '槟榔散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/binglangsan/index.html',
-      index_id: 1288
-    },
-    {
-      name: '白术丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/baishuwan/index.html',
-      index_id: 1426
-    },
-    {
-      name: '白术散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/baishusan/index.html',
-      index_id: 1446
-    },
-    {
-      name: '白术汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/baishutang/index.html',
-      index_id: 1450
-    },
-    {
-      name: '鳖甲丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/biejiawan/index.html',
-      index_id: 2771
-    },
-    {
-      name: '鳖甲散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/biejiasan/index.html',
-      index_id: 2781
-    },
-    {
-      name: '柴胡散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/chaihusan/index.html',
-      index_id: 3682
-    },
-    {
-      name: '柴胡汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/chaihutang/index.html',
-      index_id: 3703
-    },
-    {
-      name: '沉香散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/chenxiangsan/index.html',
-      index_id: 3948
-    },
-    {
-      name: '赤茯苓散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/chifulingsan/index.html',
-      index_id: 4699
-    },
-    {
-      name: '丁香散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/dingxiangsan/index.html',
-      index_id: 5151
-    },
-    {
-      name: '地黄丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/dihuangwan/index.html',
-      index_id: 5519
-    },
-    {
-      name: '大黄丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/daihuangwan/index.html',
-      index_id: 6252
-    },
-    {
-      name: '大黄散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/daihuangsan/index.html',
-      index_id: 6264
-    },
-    {
-      name: '大黄汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/daihuangtang/index.html',
-      index_id: 6275
-    },
-    {
-      name: '当归散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/dangguisan/index.html',
-      index_id: 6716
-    },
-    {
-      name: '当归散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/dangguisan/index.html',
-      index_id: 6717
-    },
-    {
-      name: '当归汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/dangguitang/index.html',
-      index_id: 6727
-    },
-    {
-      name: '独活散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/duhuosan/index.html',
-      index_id: 7117
-    },
-    {
-      name: '阿胶散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/ejiaosan/index.html',
-      index_id: 8079
-    },
-    {
-      name: '茯苓汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/fulingtang/index.html',
-      index_id: 8917
-    },
-    {
-      name: '防风散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/fangfengsan/index.html',
-      index_id: 9112
-    },
-    {
-      name: '防风汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/fangfengtang/index.html',
-      index_id: 9123
-    },
-    {
-      name: '防风汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/fangfengtang/index.html',
-      index_id: 9124
-    },
-    {
-      name: '附子散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/fuzisan/index.html',
-      index_id: 9218
-    },
-    {
-      name: '厚朴散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/houposan/index.html',
-      index_id: 11133
-    },
-    {
-      name: '寒凉降火汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/hanliangjianghuotang/index.html',
-      index_id: 11557
-    },
-    {
-      name: '诃黎勒丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/helilewan/index.html',
-      index_id: 12713
-    },
-    {
-      name: '诃黎勒散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/helilesan/index.html',
-      index_id: 12715
-    },
-    {
-      name: '黄耆丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huangqiwan/index.html',
-      index_id: 12943
-    },
-    {
-      name: '黄耆散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huangqisan/index.html',
-      index_id: 12982
-    },
-    {
-      name: '黄耆汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huangqitang/index.html',
-      index_id: 12992
-    },
-    {
-      name: '黄芩汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huangqintang/index.html',
-      index_id: 13079
-    },
-    {
-      name: '黄连丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huanglianwan/index.html',
-      index_id: 13158
-    },
-    {
-      name: '黄连散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/huangliansan/index.html',
-      index_id: 13191
-    },
-    {
-      name: '加味四物汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/jiaweisiwutang/index.html',
-      index_id: 14564
-    },
-    {
-      name: '羚羊角散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/lingyangjiaosan/index.html',
-      index_id: 19142
-    },
-    {
-      name: '羚羊角汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/lingyangjiaotang/index.html',
-      index_id: 19143
-    },
-    {
-      name: '芦荟丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/luhuiwan/index.html',
-      index_id: 19239
-    },
-    {
-      name: '鹿茸丸',
-      href: 'https://www.zysj.com.cn/zhongyaofang/lurongwan/index.html',
-      index_id: 19705
-    },
-    {
-      name: '麦门冬汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/maimendongtang/index.html',
-      index_id: 20354
-    },
-    {
-      name: '麦门冬汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/maimendongtang/index.html',
-      index_id: 20355
-    },
-    {
-      name: '麻黄散',
-      href: 'https://www.zysj.com.cn/zhongyaofang/mahuangsan/index.html',
-      index_id: 20459
-    },
-    {
-      name: '麻黄汤',
-      href: 'https://www.zysj.com.cn/zhongyaofang/mahuangtang/index.html',
-      index_id: 20480
-    }
-  ];
+  let allData = mainData;
+  // let allData = [  {
+  //   name: '安体散',
+  //   href: 'https://www.zysj.com.cn/zhongyaofang/antisan/index.html',
+  //   index_id: 867
+  // },];
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: {
@@ -270,6 +33,7 @@ try {
     },
   });
   const newPage = await browser.newPage();
+
   // const urls = [
   //   'https://www.zysj.com.cn/zhongyaofang/index_1.html',
   //   'https://www.zysj.com.cn/zhongyaofang/index_2.html',
@@ -320,18 +84,22 @@ try {
   //   })
   //   allData = lodash.concat(allData, curData);
   // }
-  // let writerStream = fs.createWriteStream('mainDataFile.txt');
+  // let writerStream = fs.createWriteStream('fangji.json');
   // writerStream.write(JSON.stringify(allData), 'UTF8');
 
   // 插入数据
-  const insertData = (addSqlParams, index) => {
-    const addSql = 'INSERT INTO fangji(index_id,name,href,children) VALUES(?,?,?,?)';
-    connection.query(addSql, addSqlParams, (err, result) => {
-      if (err) {
-        console.log('插入数据库报错' + err.message + '----' + index);
-        return;
-      }
-    });
+  
+  const insertData = async (addSqlParams, index, addSql) => {
+    return new Promise(async (resove, reject) => {
+      connection.query(addSql, addSqlParams, (err, result) => {
+        if (err) {
+          console.log('插入数据库报错' + err.message + '----' + index);
+          reject(err);
+          return;
+        }
+        resove(addSqlParams.id);
+      });
+    })
   }
 
   // 修改数据
@@ -359,18 +127,22 @@ try {
     });
   }
 
-  searchData();
+  // searchData();
 
   const initData = async () => {
     for1:
     for (let index = 0; index < allData.length; index++) {
       try {
         const itemData = allData[index];
+        lodash.set(itemData, 'id', `${index+1}`);
+        // 方剂插入数据库
+        await insertData(itemData, index, 'INSERT INTO fangji SET ?');
         console.log(`运行中: ${index + 1}/${allData.length}`);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 600));
         await newPage.goto(itemData.href);
         await new Promise((resolve) => setTimeout(resolve, 300));
         const itemUl = await newPage.waitForSelector('#content');
+        // 详细数据
         const curData = await itemUl.evaluate(async (e) => {
   
           const songList = Array.from(e.children);
@@ -379,95 +151,86 @@ try {
             if (clo.indexOf(item) > -1) return true;
             return false;
           }
-  
           for (let idx0 = 0; idx0 < songList.length; idx0++) {
             const itemSon = songList[idx0];
-            const tempObj = {};
-            // console.log('=================');
-            // console.log(itemSon.childNodes);
-            // console.log(itemSon.children[0].innerText);
-            // console.log('=================');
+            const tempObj = {
+              name: "",
+              pinyin_name_phonetic: "",
+              alias: "",
+              prescription: "",
+              making: "",
+              functional_indications: "",
+              usage: "",
+              care: "",
+              excerpt: "",
+              pharmacological_action: "",
+              remark: "",
+            };
+            lalala:
             for (let idx1 = 0; idx1 < itemSon.children.length; idx1++) {
               const childItem = itemSon.children[idx1];
-              // const childNode = itemSon.childNodes[idx1];
-              const title = itemSon.children[0].innerText;
-  
               const text = childItem.children.length > 1 && childItem.children[1] && childItem.children[1].innerText ? childItem.children[1].innerText : '';
-              // console.log('title', title)
-  
-              // if(idx1 <= 4 ) {
-  
-                // if (includes(childItem.className, 'pinyin_name_phonetic')) {
-                //   tempObj['pinyin_name_phonetic'] = text;
-                // }
-                // if (includes(childItem.className, 'alias')) {
-                //   tempObj['alias'] = text;
-                // }
-                if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
-                  tempObj['prescription'] = text;
-                }
-                if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
-                  tempObj['making'] = text;
-                }
-                if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
-                  tempObj['functional_indications'] = text;
-                }
-                if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
-                  tempObj['usage'] = text;
-                }
-                // if (includes(childItem.className, 'care')) {
-                //   tempObj['care'] = text;
-                // }
-                // if (includes(childItem.className, 'excerpt')) {
-                //   tempObj['excerpt'] = text;
-                // }
-                // if (includes(childItem.className, 'pharmacological_action')) {
-                //   tempObj['pharmacological_action'] = text;
-                // }
-                // if (includes(childItem.className, 'remark')) {
-                //   tempObj['remark'] = text;
-                // }
-  
-              // }
-              
+
+              if(childItem['nodeName'] === 'H2') {
+                tempObj['name'] = childItem.innerText;
+              }
+              if (includes(childItem.className, 'pinyin_name_phonetic')) {
+                tempObj['pinyin_name_phonetic'] = text;
+              }
+              if (includes(childItem.className, 'alias')) {
+                tempObj['alias'] = text;
+              }
+              if (includes(childItem.className, 'prescription') || includes(childItem.className, 'zucheng')) {
+                tempObj['prescription'] = text;
+              }
+              if (includes(childItem.className, 'making') || includes(childItem.className, 'fangjie')) {
+                tempObj['making'] = text;
+              }
+              if (includes(childItem.className, 'functional_indications') || includes(childItem.className, 'zhuzhi')) {
+                tempObj['functional_indications'] = text;
+              }
+              if (includes(childItem.className, 'usage') || includes(childItem.className, 'fufa')) {
+                tempObj['usage'] = text;
+              }
+              if (includes(childItem.className, 'care')) {
+                tempObj['care'] = text;
+              }
+              if (includes(childItem.className, 'excerpt')) {
+                tempObj['excerpt'] = text;
+              }
+              if (includes(childItem.className, 'pharmacological_action')) {
+                tempObj['pharmacological_action'] = text;
+              }
+              if (includes(childItem.className, 'remark')) {
+                tempObj['remark'] = text;
+              }
             }
               
             tempArr.push(tempObj);
           }
           return tempArr;
         })
-  
-        // children太长临时添加==
-        const tempNewArr = [];
-        for (let index = 0; index < curData.length; index++) {
-          if(index < 8) {
-            const item = curData[index];
-            tempNewArr.push(item);
+        // 插入子数据
+        for (let index1 = 0; index1 < curData.length; index1++) {
+          const itemChildren = curData[index1];
+          if(!itemChildren.name) {
+            lodash.set(itemChildren, 'name', itemData.name);
           }
+          lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
+          lodash.set(itemChildren, 'p_id', `${index+1}`);
+          await insertData(itemChildren, index1, 'INSERT INTO fangji_children SET ?');
+          console.log('插入子项成功'+`${index+1}-${index1+1}`);
         }
-        allData[index]['children'] = JSON.stringify(tempNewArr);
-        // children太长临时添加==
-  
-        // allData[index]['children'] = JSON.stringify(curData);
-        // console.log(allData[index]['children'].length);
-        // 插入新数据
-        // insertData([index + 1, allData[index]['name'], allData[index]['href'], allData[index]['children']]);
-        // insertData([allData[index]['index_id'], allData[index]['name'], allData[index]['href'], allData[index]['children']]);
-        // 修改旧数据
-        changeData([allData[index]['children'], allData[index]['index_id']]);
-        await new Promise((resolve) => setTimeout(resolve, 500));
         await newPage.goBack();
       } catch (error) { 
         console.log('error');
         console.log(error);
       }
-      // console.log(allData);
-      // if(index === 8189) break for1;
     }
   }
 
-  // await initData();
+  await initData();
 
-  await browser.close();
+  // await browser.close();
 
 })()

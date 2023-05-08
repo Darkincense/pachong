@@ -78,13 +78,11 @@ connection.query(sql, function (err, result) {
       
       
       
-      lodash.includes(item.children, '硫磺')
+      // lodash.includes(item.children, '硫磺')
       // lodash.includes(item.children, '活血化瘀')
-
-
-
-
-
+      
+      lodash.includes(item.children, '痔疮') &&
+      lodash.includes(item.children, '除')
 
     ) {
       newData.push(item.name);

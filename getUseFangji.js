@@ -115,7 +115,7 @@ connection.connect();
   // await getFangjiBy(zhengzhuang);
   
   // 药物数组
-  const fangjizucheng = ['人参', '附子'];
+  const fangjizucheng = ['附子'];
   // await getFangjiByPre(fangjizucheng);
 
   const allData1 = await getFinalData(zhengzhuang, fangjizucheng);

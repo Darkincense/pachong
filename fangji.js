@@ -236,4 +236,6 @@ try {
 
   await browser.close();
 
+  connection.end();
+
 })()

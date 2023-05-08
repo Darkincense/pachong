@@ -225,7 +225,7 @@ const errorArr = [];
             }
             lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
             lodash.set(itemChildren, 'p_id', `${index+1}`);
-            await insertData(itemChildren, index1, 'INSERT INTO fangji_children SET ?');
+            await insertData(itemChildren, `${index+1}_${index1+1}`, 'INSERT INTO fangji_children SET ?');
             console.log('插入子项成功'+`${index+1}-${index1+1}`);
           }
           await newPage.goBack();

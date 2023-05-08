@@ -3,7 +3,7 @@ const fs = require('fs');
 const lodash = require('lodash');
 const readline = require('readline');
 const mysql = require('mysql');
-const mainData = require('./fangji.json');
+const mainData = require('./fangjireq.json');
 
 const connection = mysql.createConnection({
   // host: '127.0.0.1',
@@ -85,7 +85,7 @@ const errorArr = [];
   //   })
   //   allData = lodash.concat(allData, curData);
   // }
-  // let writerStream = fs.createWriteStream('fangji.json');
+  // let writerStream = fs.createWriteStream('fangjireq.json');
   // writerStream.write(JSON.stringify(allData), 'UTF8');
 
   // 插入数据
@@ -139,11 +139,11 @@ const errorArr = [];
     for (let index = 0; index < allData.length; index++) {
       try {
         // 数据库最后一个id的值
-        if(index >= 6683) {
+        if(index+1 === 24504) {
           const itemData = allData[index];
           lodash.set(itemData, 'id', `${index+1}`);
           // 方剂插入数据库
-          await insertData(itemData, index, 'INSERT INTO fangji SET ?');
+          // await insertData(itemData, index, 'INSERT INTO fangji SET ?');
           console.log(`运行中: ${index + 1}/${allData.length}`);
           await new Promise((resolve) => setTimeout(resolve, 600));
           await newPage.goto(itemData.href);
@@ -220,13 +220,15 @@ const errorArr = [];
           // 插入子数据
           for (let index1 = 0; index1 < curData.length; index1++) {
             const itemChildren = curData[index1];
-            if(!itemChildren.name) {
-              lodash.set(itemChildren, 'name', itemData.name);
-            }
-            lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
-            lodash.set(itemChildren, 'p_id', `${index+1}`);
-            await insertData(itemChildren, `${index+1}_${index1+1}`, 'INSERT INTO fangji_children SET ?');
-            console.log('插入子项成功'+`${index+1}-${index1+1}`);
+            // if(index1+1 === 6) {
+              if(!itemChildren.name) {
+                lodash.set(itemChildren, 'name', itemData.name);
+              }
+              lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
+              lodash.set(itemChildren, 'p_id', `${index+1}`);
+              await insertData(itemChildren, `${index+1}_${index1+1}`, 'INSERT INTO fangji_children SET ?');
+              console.log('插入子项成功'+`${index+1}-${index1+1}`);
+            // }
           }
           await newPage.goBack();
         };

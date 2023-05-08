@@ -18,6 +18,7 @@ try {
   connection.connect();
   console.log('连接成功');
 } catch(err) { }
+const errorArr = [];
 (async () => {
   let allData = mainData;
   // let allData = [  {
@@ -93,7 +94,11 @@ try {
     return new Promise(async (resove, reject) => {
       connection.query(addSql, addSqlParams, (err, result) => {
         if (err) {
-          console.log('插入数据库报错' + err.message + '----' + index);
+          console.log('插入数据库报错');
+          errorArr.push(('插入数据库报错--||' + err.message + '----||第' + index + '个||----time------||' + (+new Date())))
+          let writerStream = fs.createWriteStream('fangji_error.txt');
+          writerStream.write(JSON.stringify(errorArr), 'UTF8');
+          writerStream.end();
           reject(err);
           return;
         }

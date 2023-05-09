@@ -124,7 +124,21 @@ connection.connect();
     let writerStream = fs.createWriteStream('searchResult.json');
     writerStream.write(JSON.stringify(allData), 'UTF8');
     writerStream.end();
+  }
 
+  // 根据方剂列表查询方性
+  // properties_flavor  attribution functional_indications
+  const getFangXing = async (list) => {
+    let sql1 = "SELECT name,properties_flavor,attribution,functional_indications FROM `zhongyao_children` WHERE ";
+    for (let index = 0; index < list.length; index++) {
+      const itemData = list[index];
+      sql1 += "`name` LIKE '%"+ itemData +"%'";
+      if(index < list.length - 1) sql1 += " OR";
+    }
+    const allData = await getData(sql1);
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
   }
 
   // 症状数组
@@ -133,12 +147,16 @@ connection.connect();
   // await getFangjiBy(zhengzhuang);
 
   // 查询对应中药
-  const zhengzhuang = ['补'];
-  await searchZhongYao(zhengzhuang, '肾');
+  // const zhengzhuang = ['补'];
+  // await searchZhongYao(zhengzhuang, '肾');
   
   // 药物数组
   // const fangjizucheng = [];
   // await getFangjiByPre(fangjizucheng);
+
+  // 根据药物数组查询方性
+  const arrList = ['漂海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '明雄黄'];
+  await getFangXing(arrList);
 
   // await getFinalData(zhengzhuang, fangjizucheng);
 

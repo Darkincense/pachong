@@ -236,7 +236,7 @@ const errorArr = [];
       try {
         // 数据库最后一个id的值
         if(
-          index >= 3732
+          index+1 === 9092
         ) 
         {
           const itemData = allData[index];
@@ -386,13 +386,15 @@ const errorArr = [];
           // 插入子数据
           for (let index1 = 0; index1 < curData.length; index1++) {
             const itemChildren = curData[index1];
-            if(!itemChildren.name) {
-              lodash.set(itemChildren, 'name', itemData.name);
+            if(index1+1 === 2) {
+              if(!itemChildren.name) {
+                lodash.set(itemChildren, 'name', itemData.name);
+              }
+              lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
+              lodash.set(itemChildren, 'p_id', `${index+1}`);
+              await insertData(itemChildren, `${index+1}_${index1+1}`, 'INSERT INTO zhongyao_children SET ?');
+              console.log('插入子项成功'+`${index+1}-${index1+1}`);
             }
-            lodash.set(itemChildren, 'id', `${index+1}_${index1+1}`);
-            lodash.set(itemChildren, 'p_id', `${index+1}`);
-            await insertData(itemChildren, `${index+1}_${index1+1}`, 'INSERT INTO zhongyao_children SET ?');
-            console.log('插入子项成功'+`${index+1}-${index1+1}`);
           }
           await newPage.goBack();
         }

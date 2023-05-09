@@ -111,41 +111,30 @@ connection.connect();
   }
 
   // 查询药物药理作用
-  const searchZhongYao = async (list) => {
-    // const sql1 = `SELECT * FROM zhongyao WHERE name = ${name}`;
-    // const sql2 = `SELECT * FROM zhongyao_children WHERE p_id = ${name}`;
-    // const  getData(sql1)
-
-    let sql1 = "SELECT * FROM `fangji_children` WHERE ";
+  // WHERE `attribution` LIKE '%肝%' AND `functional_indications` LIKE '%消肿%' ORDER BY `p_id` LIMIT 0, 1000
+  const searchZhongYao = async (list, attribution) => {
+    let sql1 = "SELECT * FROM `zhongyao_children` WHERE `attribution` LIKE '%"+ attribution +"%' AND ";
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
       sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
       if(index < list.length - 1) sql1 += " OR";
     }
     const allData = await getData(sql1);
-    
+
     let writerStream = fs.createWriteStream('searchResult.json');
     writerStream.write(JSON.stringify(allData), 'UTF8');
     writerStream.end();
 
   }
 
-
-
-  // 获取最终汇总数据
-  const getFinalData = async (zhengzhuang, fangjizucheng) => {
-    const data1 = await getFangjiBy(zhengzhuang);
-    const data2 = await getFangjiByPre(fangjizucheng);
-    const finalArr =  lodash.uniqBy(lodash.concat(data1, data2), 'id');
-    const writerStream = fs.createWriteStream('searchResult.json');
-    writerStream.write(JSON.stringify(finalArr), 'UTF8');
-    writerStream.end();
-  }
-
   // 症状数组
-  const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
+  // const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
   // const zhengzhuang = ['气血两亏', '气血瘀滞'];
-  await getFangjiBy(zhengzhuang);
+  // await getFangjiBy(zhengzhuang);
+
+  // 查询对应中药
+  const zhengzhuang = ['补'];
+  await searchZhongYao(zhengzhuang, '肾');
   
   // 药物数组
   // const fangjizucheng = [];

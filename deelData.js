@@ -71,7 +71,8 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '喜唾')
 
       // lodash.includes(item.children, '气血两亏') &&
-      lodash.includes(item.children, '气血瘀滞')
+      lodash.includes(item.children, '肝') &&
+      lodash.includes(item.children, '活血祛瘀')
 
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '活血化瘀')

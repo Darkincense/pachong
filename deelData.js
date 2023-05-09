@@ -1,9 +1,10 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
 const lodash = require('lodash');
+const fs = require('fs');
 const mainBigData = require('./dazhongyi.json');
 const mainData = require('./mainDataFile.json');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
   password: 'root123456',
@@ -12,8 +13,8 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var sql = 'SELECT * FROM fangji';
-// var sql = 'SELECT * FROM zhongyao';
+const sql = 'SELECT * FROM fangji';
+// const sql = 'SELECT * FROM zhongyao';
 //查
 connection.query(sql, function (err, result) {
   if (err) {
@@ -58,7 +59,19 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '利水') &&
       // lodash.includes(item.children, '活血化瘀')
 
-      lodash.includes(item.children, '肝胃不和')
+      // lodash.includes(item.children, '肝胃不和')
+
+      // lodash.includes(item.children, '呃逆') &&
+      // '呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'
+
+      // lodash.includes(item.children, '呃逆') ||
+      // lodash.includes(item.children, '肌肤甲错') ||
+      // lodash.includes(item.children, '肠鸣') ||
+      // lodash.includes(item.children, '心下痞') ||
+      // lodash.includes(item.children, '喜唾')
+
+      // lodash.includes(item.children, '气血两亏') &&
+      lodash.includes(item.children, '气血瘀滞')
 
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '活血化瘀')
@@ -87,10 +100,13 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '除')
 
     ) {
-      newData.push(item.name);
+      newData.push(item);
     }
   }
-  console.log(JSON.stringify(newData))
+  // console.log(JSON.stringify(newData))
+  const writerStream = fs.createWriteStream('searchResult.json');
+  writerStream.write(JSON.stringify(newData), 'UTF8');
+  writerStream.end();
 
 });
 

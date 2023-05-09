@@ -77,52 +77,83 @@ connection.connect();
 
   // 通过主治功能获取对应方剂
   const getFangjiBy = async (zhengzhuang) => {
-    const req_p_ids = []; // 所有符合条件的子集的父级id
-    const finalArr = [];
-    const sqlChildren = 'SELECT * FROM fangji_children';
-    const allData = await getData(sqlChildren);
+    // 模糊查询
+    // const sqlChildren = "SELECT * FROM `zhongyao_children` WHERE `functional_indications` LIKE '%气血两亏%' OR `functional_indications` LIKE '%气血瘀滞%' ORDER BY `p_id` LIMIT 0, 1000";
+    // 根据某一项批量查询
+    // const sqlChildren = "SELECT * FROM `huilaoye`.`zhongyao_children` WHERE `p_id` in ("+ '1' + ',2' +") ORDER BY `p_id` LIMIT 0, 1000";
+    
+    let sql1 = "SELECT * FROM `fangji_children` WHERE ";
+    for (let index = 0; index < zhengzhuang.length; index++) {
+      const itemData = zhengzhuang[index];
+      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
+      if(index < zhengzhuang.length - 1) sql1 += " OR";
+    }
+    const allData = await getData(sql1);
+
+    let sql2 = "SELECT * FROM `fangji` WHERE `id` in (";
     for (let index = 0; index < allData.length; index++) {
       const allItem = allData[index];
-      // 检测配方中有没有该药
-      if(testWordsNum(allItem.functional_indications, zhengzhuang)) {
-        req_p_ids.push(getData(`SELECT * FROM fangji WHERE id = ${allItem.p_id}`));
+      if(index === 0) {
+        sql2 += `${allItem.p_id}`;
+      } else {
+        sql2 += `,${allItem.p_id}`;
       }
-    }
-    const finalData = await Promise.allSettled(req_p_ids);
-    for (let index = 0; index < finalData.length; index++) {
-      const itemData = finalData[index];
-      if(itemData.status === 'fulfilled') {
-        finalArr.push(itemData.value[0]);
-      }
+      if(index === allData.length - 1) sql2 += ")";
     }
 
-    // let writerStream = fs.createWriteStream('searchResult.json');
-    // writerStream.write(JSON.stringify(finalArr), 'UTF8');
-    // writerStream.end();
-    return finalArr;
+    const finalData = await getData(sql2);
+
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
+
+    return finalData;
   }
+
+  // 查询药物药理作用
+  const searchZhongYao = async (list) => {
+    // const sql1 = `SELECT * FROM zhongyao WHERE name = ${name}`;
+    // const sql2 = `SELECT * FROM zhongyao_children WHERE p_id = ${name}`;
+    // const  getData(sql1)
+
+    let sql1 = "SELECT * FROM `fangji_children` WHERE ";
+    for (let index = 0; index < list.length; index++) {
+      const itemData = list[index];
+      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
+      if(index < list.length - 1) sql1 += " OR";
+    }
+    const allData = await getData(sql1);
+    
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
+
+  }
+
+
 
   // 获取最终汇总数据
   const getFinalData = async (zhengzhuang, fangjizucheng) => {
     const data1 = await getFangjiBy(zhengzhuang);
     const data2 = await getFangjiByPre(fangjizucheng);
     const finalArr =  lodash.uniqBy(lodash.concat(data1, data2), 'id');
-    return finalArr;
+    const writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(finalArr), 'UTF8');
+    writerStream.end();
   }
 
   // 症状数组
-  const zhengzhuang = ['活血化瘀'];
-  // await getFangjiBy(zhengzhuang);
+  const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
+  // const zhengzhuang = ['气血两亏', '气血瘀滞'];
+  await getFangjiBy(zhengzhuang);
   
   // 药物数组
-  const fangjizucheng = ['附子'];
+  // const fangjizucheng = [];
   // await getFangjiByPre(fangjizucheng);
 
-  const allData1 = await getFinalData(zhengzhuang, fangjizucheng);
+  // await getFinalData(zhengzhuang, fangjizucheng);
 
-  const writerStream = fs.createWriteStream('searchResult.json');
-  writerStream.write(JSON.stringify(allData1), 'UTF8');
-  writerStream.end();
+  
   
   connection.end();
 })()

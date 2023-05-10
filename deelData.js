@@ -73,7 +73,15 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '气血两亏') &&
       // lodash.includes(item.children, '肝') &&
       
-      lodash.includes(item.children, '饮食不入')
+      // lodash.includes(item.children, '饮食不入')
+
+      // lodash.includes(item.children, '食少') &&
+      // lodash.includes(item.children, '黄芪')
+      
+      // lodash.includes(item.children, '益气健脾') &&
+      // lodash.includes(item.children, '温阳利水')
+
+      lodash.includes(item.children, '归脾丸')
 
       // lodash.includes(item.children, '胃气') &&
       // lodash.includes(item.children, '呃逆')

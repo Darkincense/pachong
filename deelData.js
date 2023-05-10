@@ -71,8 +71,11 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '喜唾')
 
       // lodash.includes(item.children, '气血两亏') &&
-      lodash.includes(item.children, '肝') &&
-      lodash.includes(item.children, '活血祛瘀')
+      // lodash.includes(item.children, '肝') &&
+      
+      // lodash.includes(item.children, '胃') &&
+      lodash.includes(item.children, '理中汤')
+      // lodash.includes(item.children, '呃逆')
 
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '活血化瘀')
@@ -105,7 +108,7 @@ connection.query(sql, function (err, result) {
     }
   }
   // console.log(JSON.stringify(newData))
-  const writerStream = fs.createWriteStream('searchResult.json');
+  const writerStream = fs.createWriteStream('deelResult.json');
   writerStream.write(JSON.stringify(newData), 'UTF8');
   writerStream.end();
 

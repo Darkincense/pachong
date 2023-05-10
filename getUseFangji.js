@@ -76,20 +76,26 @@ connection.connect();
   }
 
   // 通过主治功能获取对应方剂
-  const getFangjiBy = async (zhengzhuang) => {
+  const getFangjiBy = async (zhengzhuang, type = 'OR') => {
     // 模糊查询
-    // const sqlChildren = "SELECT * FROM `zhongyao_children` WHERE `functional_indications` LIKE '%气血两亏%' OR `functional_indications` LIKE '%气血瘀滞%' ORDER BY `p_id` LIMIT 0, 1000";
+    // const sql1 = "SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%气血两亏%' OR `functional_indications` LIKE '%气血瘀滞%' ORDER BY `p_id` LIMIT 0, 1000";
+
+    // SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%胃气%' AND `functional_indications` LIKE '%活血化瘀%' LIMIT 0, 1000
+    // SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%胃气%' AND `functional_indications` LIKE '%活血化瘀%' LIMIT 0, 1000
+
+    
     // 根据某一项批量查询
-    // const sqlChildren = "SELECT * FROM `huilaoye`.`zhongyao_children` WHERE `p_id` in ("+ '1' + ',2' +") ORDER BY `p_id` LIMIT 0, 1000";
+    // const sql1 = "SELECT * FROM `huilaoye`.`fangji_children` WHERE `p_id` in ("+ '1' + ',2' +") ORDER BY `p_id` LIMIT 0, 1000";
     
     let sql1 = "SELECT * FROM `fangji_children` WHERE ";
     for (let index = 0; index < zhengzhuang.length; index++) {
       const itemData = zhengzhuang[index];
       sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
-      if(index < zhengzhuang.length - 1) sql1 += " OR";
+      if(index < zhengzhuang.length - 1) sql1 += ` ${type} `;
     }
-    const allData = await getData(sql1);
+    sql1 += " LIMIT 0, 1000";
 
+    const allData = await getData(sql1);
     let sql2 = "SELECT * FROM `fangji` WHERE `id` in (";
     for (let index = 0; index < allData.length; index++) {
       const allItem = allData[index];
@@ -141,9 +147,23 @@ connection.connect();
     writerStream.end();
   }
 
+  const getFangjiByName = async (list) => {
+    let sql1 = "SELECT name,prescription,usage,functional_indications FROM `fangji_children` WHERE ";
+    for (let index = 0; index < list.length; index++) {
+      const itemData = list[index];
+      sql1 += "`name` LIKE '%"+ itemData +"%'";
+      if(index < list.length - 1) sql1 += " OR";
+    }
+    const allData = await getData(sql1);
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
+  }
+
   // 症状数组
   // const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
   // const zhengzhuang = ['气血两亏', '气血瘀滞'];
+  // const zhengzhuang = ['纳少', '呆滞', '食欲不振'];
   // await getFangjiBy(zhengzhuang);
 
   // 查询对应中药
@@ -155,10 +175,12 @@ connection.connect();
   // await getFangjiByPre(fangjizucheng);
 
   // 根据药物数组查询方性
-  const arrList = ['漂海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '明雄黄'];
-  await getFangXing(arrList);
+  // const arrList = ['漂海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '明雄黄'];
+  // await getFangXing(arrList);
 
-  // await getFinalData(zhengzhuang, fangjizucheng);
+  // 根据名称查询方剂
+  await getFangjiByName(['理中汤', '附子']);
+
 
   
   

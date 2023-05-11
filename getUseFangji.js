@@ -209,8 +209,5 @@ connection.connect();
   // 根据名称查询方剂
   // await getFangjiByName(['理中汤', '附子']);
 
-
-  
-  
   connection.end();
 })()

@@ -135,15 +135,42 @@ connection.connect();
   // 根据方剂列表查询方性
   // properties_flavor  attribution functional_indications
   const getFangXing = async (list) => {
-    let sql1 = "SELECT name,properties_flavor,attribution,functional_indications FROM `zhongyao_children` WHERE ";
+    let sql = "SELECT * FROM `zhongyao` WHERE ";
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
-      sql1 += "`name` LIKE '%"+ itemData +"%'";
-      if(index < list.length - 1) sql1 += " OR";
+      // sql += "`name` LIKE '%"+ itemData +"%'";
+      sql += "`name` LIKE '"+ itemData +"'";
+      if(index < list.length - 1) sql += " OR";
     }
-    const allData = await getData(sql1);
+    const allData = await getData(sql);
+
+    let sql1 = "SELECT p_id,name,properties_flavor,attribution,functional_indications FROM `zhongyao_children` WHERE `p_id` in (";
+    for (let index = 0; index < allData.length; index++) {
+      const itemData = allData[index];
+      sql1 += "'"+ itemData.id +"'";
+      if(index < allData.length - 1) sql1 += ",";
+    }
+    sql1 += ")";
+
+    const allData1 = await getData(sql1);
+    const tempArr = [];
+    for (let idx1 = 0; idx1 < allData.length; idx1++) {
+      const itemAllData = allData[idx1];
+      const tempObj = {
+        ...itemAllData,
+        children: [],
+      }
+      for (let idx2 = 0; idx2 < allData1.length; idx2++) {
+        const itemAllData1 = allData1[idx2];
+        if(tempObj.id === itemAllData1.p_id) {
+          tempObj['children'].push(itemAllData1);
+        }
+      }
+      tempArr.push(tempObj);
+    }
+
     let writerStream = fs.createWriteStream('searchResult.json');
-    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.write(JSON.stringify(tempArr), 'UTF8');
     writerStream.end();
   }
 

@@ -81,10 +81,12 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '益气健脾') &&
       // lodash.includes(item.children, '温阳利水')
 
-      lodash.includes(item.children, '归脾丸')
+      // lodash.includes(item.children, '归脾丸')
 
       // lodash.includes(item.children, '胃气') &&
       // lodash.includes(item.children, '呃逆')
+
+      lodash.includes(item.children, '丁香')
 
       // lodash.includes(item.children, '半夏') &&
       // lodash.includes(item.children, '活血化瘀')

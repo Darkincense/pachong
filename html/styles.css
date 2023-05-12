@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.dialog-box {
+  width: 400px;
+  height: 500px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.dialog {
+  margin: 10px 20px;
+  padding: 10px 20px;
+  max-width: 300px;
+  border-radius: 10px;
+  background-color: #eee;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.dialog p {
+  margin: 0;
+  padding: 0;
+}

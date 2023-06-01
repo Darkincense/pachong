@@ -89,7 +89,8 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '蒲黄') || 
       // lodash.includes(item.children, '五灵脂')
 
-      lodash.includes(item.children, '砂仁')
+      lodash.includes(item.children, '口苦') &&
+      lodash.includes(item.children, '呃逆')
 
       // lodash.includes(item.children, '散结消肿') &&
       // lodash.includes(item.children, '胃气') &&
@@ -128,7 +129,7 @@ connection.query(sql, function (err, result) {
     }
   }
   // console.log(JSON.stringify(newData))
-  const writerStream = fs.createWriteStream('deelResult.json');
+  const writerStream = fs.createWriteStream('./deelResult.json');
   writerStream.write(JSON.stringify(newData), 'UTF8');
   writerStream.end();
 

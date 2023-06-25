@@ -96,27 +96,32 @@ const errorArr = [];
   const initData = async () => {
     for1:
     for (let index = 0; index < allData.length; index++) {
-      try {
-        const itemData = allData[index];
-        lodash.set(itemData, 'id', `${index+1}`);
-        console.log(`运行中: ${index + 1}/${allData.length}`);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        await newPage.goto(itemData.href);
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const itemUl = await newPage.waitForSelector('#content');
-        const curData = await itemUl.evaluate(async (e) => {
-          const tempArr = {
-            explain: `${e.innerText}`
-          };
-          
-          return tempArr;
-        })
-        lodash.set(curData, 'name', `${itemData.name}`);
-        lodash.set(curData, 'id', `${itemData.id}`);
-        // 插入子数据
-        await insertData(curData, `${curData.name}`, 'INSERT INTO cidian SET ?');
-        await newPage.goBack();
-      } catch (error) { }
+      if([7746, 10766, 10767, 10783, 10844, 10845, 10849, 10850,
+        10851, 10856, 10981,
+        11131, 11193, 11545,
+        11548, 15874].indexOf(index+1) > -1) {
+        try {
+          const itemData = allData[index];
+          lodash.set(itemData, 'id', `${index+1}`);
+          console.log(`运行中: ${index + 1}/${allData.length}`);
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          await newPage.goto(itemData.href);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          const itemUl = await newPage.waitForSelector('#content');
+          const curData = await itemUl.evaluate(async (e) => {
+            const tempArr = {
+              explain: `${e.innerText}`
+            };
+            
+            return tempArr;
+          })
+          lodash.set(curData, 'name', `${itemData.name}`);
+          lodash.set(curData, 'id', `${itemData.id}`);
+          // 插入子数据
+          await insertData(curData, `${curData.name}`, 'INSERT INTO cidian SET ?');
+          await newPage.goBack();
+        } catch (error) { }
+      }
       
     }
   }

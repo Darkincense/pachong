@@ -89,8 +89,10 @@ connection.query(sql, function (err, result) {
       // lodash.includes(item.children, '蒲黄') || 
       // lodash.includes(item.children, '五灵脂')
 
-      lodash.includes(item.children, '口苦') &&
-      lodash.includes(item.children, '呃逆')
+      // lodash.includes(item.children, '口苦') &&
+      // lodash.includes(item.children, '呃逆')
+
+      lodash.includes(item.children, '下利清谷')
 
       // lodash.includes(item.children, '散结消肿') &&
       // lodash.includes(item.children, '胃气') &&

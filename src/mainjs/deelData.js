@@ -94,6 +94,8 @@ connection.query(sql, function (err, result) {
 
       lodash.includes(item.children, '下利清谷')
 
+      // lodash.includes(item.children, '肺痈')
+
       // lodash.includes(item.children, '散结消肿') &&
       // lodash.includes(item.children, '胃气') &&
       // lodash.includes(item.children, '肝')

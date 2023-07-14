@@ -94,9 +94,18 @@ connection.query(sql, function (err, result) {
 
       // lodash.includes(item.children, '槟榔') &&
       // lodash.includes(item.children, '木瓜') &&
-      lodash.includes(item.children, '腹水')
+      // lodash.includes(item.children, '疮疡')
 
-      // lodash.includes(item.children, '肺痈')
+      // lodash.includes(item.children, '芍药') &&
+      // lodash.includes(item.children, '甘草') &&
+      // lodash.includes(item.children, '大黄') &&
+      // lodash.includes(item.children, '黄连') &&
+      // lodash.includes(item.children, '半夏') &&
+      // lodash.includes(item.children, '黄芩') &&
+      // lodash.includes(item.children, '柴胡') &&
+      // lodash.includes(item.children, '党参')
+
+      lodash.includes(item.children, '腹水')
 
       // lodash.includes(item.children, '散结消肿') &&
       // lodash.includes(item.children, '胃气') &&

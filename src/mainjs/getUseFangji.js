@@ -175,11 +175,12 @@ connection.connect();
   }
 
   const getFangjiByName = async (list) => {
-    let sql1 = "SELECT name,prescription,usage,functional_indications FROM `fangji_children` WHERE ";
+    let sql1 = `SELECT *
+    FROM fangji_children
+    WHERE `;
     for (let index = 0; index < list.length; index++) {
-      const itemData = list[index];
-      sql1 += "`name` LIKE '%"+ itemData +"%'";
-      if(index < list.length - 1) sql1 += " OR";
+      if(index > 0) sql1 += ` AND `
+      sql1 += `prescription LIKE '%${list[index]}%'`
     }
     const allData = await getData(sql1);
     let writerStream = fs.createWriteStream('searchResult.json');
@@ -202,12 +203,13 @@ connection.connect();
   // await getFangjiByPre(fangjizucheng);
 
   // 根据药物数组查询方性
-  const arrList = ['海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '雄黄'];
+  // const arrList = ['海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '雄黄'];
   // const arrList = ['柴胡', '桂枝', '炒白芍', '炙甘草', '附片', '干姜', '人参', '肉桂', '沉香', '山药', '茯苓', '砂仁', '泽泻', '牛膝', '荔枝核'];
-  await getFangXing(arrList);
+  // const arrList = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参']
+  // await getFangXing(arrList);
 
   // 根据名称查询方剂
-  // await getFangjiByName(['理中汤', '附子']);
+  await getFangjiByName(['附子', '半夏']);
 
   connection.end();
 })()

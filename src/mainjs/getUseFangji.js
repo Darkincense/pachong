@@ -47,34 +47,6 @@ connection.connect();
     return false;
   }
 
-  // 通过药物组成查看对应方剂
-  const getFangjiByPre = async (fangjizucheng) => {
-    const req_p_ids = []; // 所有符合条件的子集的父级id
-    const finalArr = [];
-    const sqlChildren = 'SELECT * FROM fangji_children';
-    const allData = await getData(sqlChildren);
-    // const fangjizucheng = ['雄精', '梅冰片', '胆矾'];
-    for (let index = 0; index < allData.length; index++) {
-      const allItem = allData[index];
-      // 检测配方中有没有该药
-      if(testWordsNum(allItem.prescription, fangjizucheng)) {
-        req_p_ids.push(getData(`SELECT * FROM fangji WHERE id = ${allItem.p_id}`));
-      }
-    }
-    const finalData = await Promise.allSettled(req_p_ids);
-    for (let index = 0; index < finalData.length; index++) {
-      const itemData = finalData[index];
-      if(itemData.status === 'fulfilled') {
-        finalArr.push(itemData.value[0]);
-      }
-    }
-
-    // let writerStream = fs.createWriteStream('searchResult.json');
-    // writerStream.write(JSON.stringify(finalArr), 'UTF8');
-    // writerStream.end();
-    return finalArr;
-  }
-
   // 通过主治功能获取对应方剂
   const getFangjiBy = async (zhengzhuang, type = 'OR') => {
     // 模糊查询
@@ -116,25 +88,11 @@ connection.connect();
     return finalData;
   }
 
-  // 查询药物药理作用
-  // WHERE `attribution` LIKE '%肝%' AND `functional_indications` LIKE '%消肿%' ORDER BY `p_id` LIMIT 0, 1000
-  const searchZhongYao = async (list, attribution) => {
-    let sql1 = "SELECT * FROM `zhongyao_children` WHERE `attribution` LIKE '%"+ attribution +"%' AND ";
-    for (let index = 0; index < list.length; index++) {
-      const itemData = list[index];
-      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
-      if(index < list.length - 1) sql1 += " OR";
-    }
-    const allData = await getData(sql1);
-
-    let writerStream = fs.createWriteStream('searchResult.json');
-    writerStream.write(JSON.stringify(allData), 'UTF8');
-    writerStream.end();
-  }
-
-  // 根据方剂列表查询方性
-  // properties_flavor  attribution functional_indications
-  const getFangXing = async (list) => {
+  /**
+   * 通过中药名称批量查询对应的药物信息
+   * @param {*} list 
+   */
+  const getInfoByTCMname = async (list) => {
     let sql = "SELECT * FROM `zhongyao` WHERE ";
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
@@ -172,8 +130,77 @@ connection.connect();
     let writerStream = fs.createWriteStream('searchResult.json');
     writerStream.write(JSON.stringify(tempArr), 'UTF8');
     writerStream.end();
+    return tempArr;
   }
 
+  /**
+   * 药物的气味转化成具体数字
+   */
+  const getPropertiesFlavorNum = (properties_flavor) => {
+    if(properties_flavor.indexOf('大寒') > -1) return -4;
+    if(properties_flavor.indexOf('寒') > -1 && properties_flavor.indexOf('大寒') === -1) return -3;
+    if(properties_flavor.indexOf('微寒') > -1) return -2;
+    if(properties_flavor.indexOf('凉') > -1) return -1;
+    
+    if(properties_flavor.indexOf('平') > -1) return 0;
+
+    if(properties_flavor.indexOf('微温') > -1) return 1;
+    if(properties_flavor.indexOf('温') > -1) return 2;
+    if(properties_flavor.indexOf('热') > -1 && properties_flavor.indexOf('大热') === -1) return 3;
+    if(properties_flavor.indexOf('大热') > -1) return 4;
+  }
+  /**
+   * 根据药物组成查看药物的寒热温凉
+   * @param {*} fangjizucheng
+   * 气：大寒、寒、微寒、凉、平、微温、温、热、大热 (-4,-3,-2,-1,0,1,2,3,4)
+   * 味：酸、苦、肝、辛、咸
+   */
+    const getFangXing = async (fangjizucheng) => {
+      const allData = await getInfoByTCMname(fangjizucheng);
+      
+      for (let i = 0; i < allData.length; i++) {
+        const ele = allData[i];
+        const tempArr = [];
+        for (let j = 0; j < ele.children.length; j++) {
+          const item = ele.children[j];
+          const properties_flavor = item.properties_flavor;
+          if(properties_flavor) {
+            tempArr.push(getPropertiesFlavorNum(properties_flavor));
+          }
+        }
+        console.log(ele.name, tempArr);
+      }
+
+      let writerStream = fs.createWriteStream('searchResult.json');
+      writerStream.write(JSON.stringify(allData), 'UTF8');
+      writerStream.end();
+    }
+
+  /**
+   * 根据主治方向查询对应药物
+   * @param {*} list 主治功能列表 ls：['燥湿化痰']
+   * @param {*} attribution 药物归经
+   */
+  const searchZhongYao = async (list, attribution = '') => {
+    let sql1 = "SELECT * FROM `zhongyao_children` WHERE ";
+    if(attribution) {
+      sql1 += "`attribution` LIKE '%"+ attribution +"%' AND ";
+    }
+    for (let index = 0; index < list.length; index++) {
+      const itemData = list[index];
+      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
+      if(index < list.length - 1) sql1 += " AND";
+    }
+    const allData = await getData(sql1);
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
+  }
+
+  /**
+   * 根据药物列表，查询所有含有该药物的方剂
+   * @param {*} list 
+   */
   const getFangjiByName = async (list) => {
     let sql1 = `SELECT *
     FROM fangji_children
@@ -195,21 +222,19 @@ connection.connect();
   // await getFangjiBy(zhengzhuang);
   
   // 药物数组
-  // const fangjizucheng = [];
-  // await getFangjiByPre(fangjizucheng);
+  const fangjizucheng = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参'];
+  await getFangXing(fangjizucheng);
 
-  // 根据药物数组查询方性
-  // const arrList = ['海藻','生甘草','木鳖子','醋鳖甲','蛇舌草','夏枯草','骚休','海蛤壳','黄药子','生半夏','生姜', '元参', '牡蛎', '大贝', '山茨菇', '山豆根', '全虫', '蜈蚣', '雄黄'];
-  // const arrList = ['柴胡', '桂枝', '炒白芍', '炙甘草', '附片', '干姜', '人参', '肉桂', '沉香', '山药', '茯苓', '砂仁', '泽泻', '牛膝', '荔枝核'];
+  // 批量查询药物信息
   // const arrList = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参']
-  // await getFangXing(arrList);
+  // await getInfoByTCMname(arrList);
 
-  // 根据病症查询对应中药
-  // const zhengzhuang = ['燥湿化痰'];
-  // await searchZhongYao(zhengzhuang, '');
+  // 根据治疗原则查询对应中药
+  // const zhengzhuang = ['活血化瘀'];
+  // await searchZhongYao(zhengzhuang);
 
-  // 根据名称查询方剂
-  await getFangjiByName(['附子', '半夏']);
+  // 根据中药名称查询包含该中药的所有方剂
+  // await getFangjiByName(['附子', '半夏']);
 
   connection.end();
 })()

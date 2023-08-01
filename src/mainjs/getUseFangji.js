@@ -47,45 +47,24 @@ connection.connect();
     return false;
   }
 
-  // 通过主治功能获取对应方剂
+  /**
+   * 通过治疗原则获取对应的方剂
+   * @param {*} zhengzhuang 
+   * @param {*} type 
+   * @returns 
+   */
   const getFangjiBy = async (zhengzhuang, type = 'OR') => {
-    // 模糊查询
-    // const sql1 = "SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%气血两亏%' OR `functional_indications` LIKE '%气血瘀滞%' ORDER BY `p_id` LIMIT 0, 1000";
-
-    // SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%胃气%' AND `functional_indications` LIKE '%活血化瘀%' LIMIT 0, 1000
-    // SELECT * FROM `fangji_children` WHERE `functional_indications` LIKE '%胃气%' AND `functional_indications` LIKE '%活血化瘀%' LIMIT 0, 1000
-
-    
-    // 根据某一项批量查询
-    // const sql1 = "SELECT * FROM `huilaoye`.`fangji_children` WHERE `p_id` in ("+ '1' + ',2' +") ORDER BY `p_id` LIMIT 0, 1000";
-    
     let sql1 = "SELECT * FROM `fangji_children` WHERE ";
     for (let index = 0; index < zhengzhuang.length; index++) {
       const itemData = zhengzhuang[index];
       sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
       if(index < zhengzhuang.length - 1) sql1 += ` ${type} `;
     }
-    sql1 += " LIMIT 0, 1000";
-
+    sql1 += " LIMIT 0, 10000";
     const allData = await getData(sql1);
-    let sql2 = "SELECT * FROM `fangji` WHERE `id` in (";
-    for (let index = 0; index < allData.length; index++) {
-      const allItem = allData[index];
-      if(index === 0) {
-        sql2 += `${allItem.p_id}`;
-      } else {
-        sql2 += `,${allItem.p_id}`;
-      }
-      if(index === allData.length - 1) sql2 += ")";
-    }
-
-    const finalData = await getData(sql2);
-
     let writerStream = fs.createWriteStream('searchResult.json');
     writerStream.write(JSON.stringify(allData), 'UTF8');
     writerStream.end();
-
-    return finalData;
   }
 
   /**
@@ -214,24 +193,24 @@ connection.connect();
     writerStream.write(JSON.stringify(allData), 'UTF8');
     writerStream.end();
   }
-
-  // 症状数组
-  // const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
-  // const zhengzhuang = ['气血两亏', '气血瘀滞'];
-  // const zhengzhuang = ['纳少', '呆滞', '食欲不振'];
-  // await getFangjiBy(zhengzhuang);
   
   // 药物数组
-  const fangjizucheng = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参'];
-  await getFangXing(fangjizucheng);
+  // const fangjizucheng = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参'];
+  // await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
   // const arrList = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参']
   // await getInfoByTCMname(arrList);
 
   // 根据治疗原则查询对应中药
-  // const zhengzhuang = ['活血化瘀'];
+  // const zhengzhuang = ['活血化瘀', '清热解毒'];
   // await searchZhongYao(zhengzhuang);
+
+  // 症状数组
+  const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
+  // const zhengzhuang = ['气血两亏', '补肾益精'];
+  // const zhengzhuang1 = ['食欲不振'];
+  await getFangjiBy(zhengzhuang, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
   // await getFangjiByName(['附子', '半夏']);

@@ -193,10 +193,6 @@ connection.connect();
   // const zhengzhuang = ['气血两亏', '气血瘀滞'];
   // const zhengzhuang = ['纳少', '呆滞', '食欲不振'];
   // await getFangjiBy(zhengzhuang);
-
-  // 查询对应中药
-  // const zhengzhuang = ['散结消肿'];
-  // await searchZhongYao(zhengzhuang, '胃');
   
   // 药物数组
   // const fangjizucheng = [];
@@ -207,6 +203,10 @@ connection.connect();
   // const arrList = ['柴胡', '桂枝', '炒白芍', '炙甘草', '附片', '干姜', '人参', '肉桂', '沉香', '山药', '茯苓', '砂仁', '泽泻', '牛膝', '荔枝核'];
   // const arrList = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参']
   // await getFangXing(arrList);
+
+  // 根据病症查询对应中药
+  // const zhengzhuang = ['燥湿化痰'];
+  // await searchZhongYao(zhengzhuang, '');
 
   // 根据名称查询方剂
   await getFangjiByName(['附子', '半夏']);

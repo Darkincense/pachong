@@ -209,11 +209,11 @@ connection.connect();
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
   // const zhengzhuang = ['补血', '活血'];
-  // const zhengzhuang1 = ['食欲不振'];
-  // await getFangjiBy(zhengzhuang, 'AND');
+  const zhengzhuang = ['气滞血瘀'];
+  await getFangjiBy(zhengzhuang, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
-  await getFangjiByName(['白术', '当归', '白茯苓', '炒黄芪', '龙眼肉', '远志', '炒酸枣仁']);
+  // await getFangjiByName(['白术', '当归', '白茯苓', '炒黄芪', '龙眼肉', '远志', '炒酸枣仁']);
 
   connection.end();
 })()

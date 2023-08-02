@@ -207,8 +207,8 @@ connection.connect();
   // await searchZhongYao(zhengzhuang);
 
   // 症状数组
-  const zhengzhuang = ['呃逆', '喜唾', '食少', '心下痞', '肠鸣', '肌肤甲错'];
-  // const zhengzhuang = ['气血两亏', '补肾益精'];
+  // const zhengzhuang = ['脾不统血'];
+  const zhengzhuang = ['气血两亏', '补肾益精'];
   // const zhengzhuang1 = ['食欲不振'];
   await getFangjiBy(zhengzhuang, 'AND');
 
@@ -217,3 +217,6 @@ connection.connect();
 
   connection.end();
 })()
+
+// 归脾汤治疗脾不统血
+// 白术、当归、白茯苓、炒黄芪、龙眼肉、远志、炒酸枣仁各一钱(各30克)，木香五分(15克) ，人参一钱(30克)，炙甘草三分(10克)。

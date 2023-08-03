@@ -207,9 +207,9 @@ connection.connect();
   // await searchZhongYao(zhengzhuang);
 
   // 根据症状数组获取对应方剂
-  // const zhengzhuang = ['脾不统血'];
+  const zhengzhuang = ['脾不统血'];
   // const zhengzhuang = ['补血', '活血'];
-  const zhengzhuang = ['气滞血瘀'];
+  // const zhengzhuang = ['气滞血瘀'];
   await getFangjiBy(zhengzhuang, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂

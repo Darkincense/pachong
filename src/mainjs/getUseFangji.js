@@ -195,7 +195,7 @@ connection.connect();
   }
   
   // 根据药物数组获取方性
-  // const fangjizucheng = ['芍药', '甘草', '大黄', '黄连', '半夏', '黄芩', '柴胡', '党参'];
+  // const fangjizucheng = ['肉苁蓉'];
   // await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
@@ -207,13 +207,14 @@ connection.connect();
   // await searchZhongYao(zhengzhuang);
 
   // 根据症状数组获取对应方剂
-  const zhengzhuang = ['脾不统血'];
+  // const zhengzhuang = ['脾不统血'];
+  // const zhengzhuang = ['吼'];
   // const zhengzhuang = ['补血', '活血'];
   // const zhengzhuang = ['气滞血瘀'];
-  await getFangjiBy(zhengzhuang, 'AND');
+  // await getFangjiBy(zhengzhuang, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
-  // await getFangjiByName(['白术', '当归', '白茯苓', '炒黄芪', '龙眼肉', '远志', '炒酸枣仁']);
+  await getFangjiByName(['山茱萸', '黄芪', '蕤仁', '三七', '大黄', '葛根', '生地黄']);
 
   connection.end();
 })()

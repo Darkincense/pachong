@@ -147,7 +147,9 @@ connection.connect();
             tempArr.push(getPropertiesFlavorNum(properties_flavor));
           }
         }
-        console.log(ele.name, tempArr);
+        const totle = tempArr.reduce((totle, cur) => totle*1 + cur*1, 0);
+
+        console.log(ele.name, totle/tempArr.length);
       }
 
       let writerStream = fs.createWriteStream('searchResult.json');
@@ -196,7 +198,8 @@ connection.connect();
   
   // 根据药物数组获取方性
   // const fangjizucheng = ['肉苁蓉'];
-  // await getFangXing(fangjizucheng);
+  const fangjizucheng = ['牡丹', '桃仁', '桂枝', '茯苓', '赤芍', '炙甘草', '枳实', '柴胡', '海藻', '当归', '清半夏', '三棱', '莪术', '水蛭'];
+  await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
   // const arrList = ['鸡血藤']
@@ -214,7 +217,7 @@ connection.connect();
   // await getFangjiBy(zhengzhuang, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
-  await getFangjiByName(['山茱萸', '黄芪', '蕤仁', '三七', '大黄', '葛根', '生地黄']);
+  // await getFangjiByName(['山茱萸', '黄芪', '蕤仁', '三七', '大黄', '葛根', '生地黄']);
 
   connection.end();
 })()

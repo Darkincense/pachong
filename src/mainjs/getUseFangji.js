@@ -195,29 +195,48 @@ connection.connect();
     writerStream.write(JSON.stringify(allData), 'UTF8');
     writerStream.end();
   }
-  
+
+  /**
+   * 根据现代定义的病名称，查找古代对应的病名
+   */
+  const getChineseNameByCurName = async (explain) => {
+    let sql = "SELECT * FROM cidian WHERE explain_content LIKE '%" + explain + "%'";
+    try {
+      const allData = await getData(sql);
+      const nameList = allData.map(item => item.name);
+      console.log(nameList);
+      return nameList;
+    } catch(error) {
+      return [];
+      console.log(error);
+    }
+  }
+
   // 根据药物数组获取方性
   // const fangjizucheng = ['肉苁蓉'];
-  const fangjizucheng = ['牡丹', '桃仁', '桂枝', '茯苓', '赤芍', '炙甘草', '枳实', '柴胡', '海藻', '当归', '清半夏', '三棱', '莪术', '水蛭'];
-  await getFangXing(fangjizucheng);
+  // const fangjizucheng = ['牡丹', '桃仁', '桂枝', '茯苓', '赤芍', '炙甘草', '枳实', '柴胡', '海藻', '当归', '清半夏', '三棱', '莪术', '水蛭'];
+  // await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
-  // const arrList = ['鸡血藤']
+  // const arrList = ['熟地黄', '山萸肉', '山药','茯苓','泽泻','丹皮','五味子','枸杞子','沙苑子','决明子','青葙子','茺蔚子','菟丝子','覆盆子','车前子' ]
   // await getInfoByTCMname(arrList);
 
   // 根据治疗原则查询对应中药
-  // const zhengzhuang = ['活血化瘀', '清热解毒'];
+  // const zhengzhuang = ['癥瘕'];
   // await searchZhongYao(zhengzhuang);
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
   // const zhengzhuang = ['吼'];
   // const zhengzhuang = ['补血', '活血'];
-  // const zhengzhuang = ['气滞血瘀'];
-  // await getFangjiBy(zhengzhuang, 'AND');
+  // const zhengzhuang = ['糖尿病'];
+  // const zhengzhuang = ['聤耳'];
+  // const zhengzhuang = ['胸痹', '心俞'];
+  const zhengzhuang = await getChineseNameByCurName('冠心病');
+  await getFangjiBy(zhengzhuang, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
-  // await getFangjiByName(['山茱萸', '黄芪', '蕤仁', '三七', '大黄', '葛根', '生地黄']);
+  // await getFangjiByName(['附子', '干姜']);
 
   connection.end();
 })()

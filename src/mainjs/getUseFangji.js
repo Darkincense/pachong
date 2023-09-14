@@ -232,8 +232,12 @@ connection.connect();
   // const zhengzhuang = ['糖尿病'];
   // const zhengzhuang = ['聤耳'];
   // const zhengzhuang = ['胸痹', '心俞'];
-  const zhengzhuang = await getChineseNameByCurName('冠心病');
-  await getFangjiBy(zhengzhuang, 'OR');
+  const zhengzhuang = await getChineseNameByCurName('脾不统血');
+  if(zhengzhuang.length > 0) {
+    await getFangjiBy(zhengzhuang, 'OR');
+  } else {
+    console.log('什么都没搜到~');
+  }
 
   // 根据中药名称查询包含该中药的所有方剂
   // await getFangjiByName(['附子', '干姜']);

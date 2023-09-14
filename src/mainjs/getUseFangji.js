@@ -232,7 +232,7 @@ connection.connect();
   // const zhengzhuang = ['糖尿病'];
   // const zhengzhuang = ['聤耳'];
   // const zhengzhuang = ['胸痹', '心俞'];
-  const zhengzhuang = await getChineseNameByCurName('脾不统血');
+  const zhengzhuang = await getChineseNameByCurName('骨质增生');
   if(zhengzhuang.length > 0) {
     await getFangjiBy(zhengzhuang, 'OR');
   } else {

@@ -199,16 +199,18 @@ connection.connect();
   /**
    * 根据现代定义的病名称，查找古代对应的病名
    */
-  const getChineseNameByCurName = async (explain) => {
+  const getChineseNameByCurName = async (explain, isDirect) => {
     let sql = "SELECT * FROM cidian WHERE explain_content LIKE '%" + explain + "%'";
     try {
       const allData = await getData(sql);
       const nameList = allData.map(item => item.name);
       console.log(nameList);
+      if(nameList.length === 0 || isDirect) {
+        await getFangjiBy([explain], 'OR');
+      }
       return nameList;
     } catch(error) {
       return [];
-      console.log(error);
     }
   }
 
@@ -231,12 +233,11 @@ connection.connect();
   // const zhengzhuang = ['补血', '活血'];
   // const zhengzhuang = ['糖尿病'];
   // const zhengzhuang = ['聤耳'];
-  // const zhengzhuang = ['胸痹', '心俞'];
-  const zhengzhuang = await getChineseNameByCurName('骨质增生');
-  if(zhengzhuang.length > 0) {
+  // const zhengzhuang = [ '发落', '毛拔', '油风'];
+  const isDirect = false;
+  const zhengzhuang = await getChineseNameByCurName('脱发', isDirect);
+  if(zhengzhuang.length > 0 && !isDirect) {
     await getFangjiBy(zhengzhuang, 'OR');
-  } else {
-    console.log('什么都没搜到~');
   }
 
   // 根据中药名称查询包含该中药的所有方剂
@@ -255,3 +256,5 @@ connection.connect();
 // 桂枝茯苓丸+四逆散+清半夏
 // 牡丹（去心），炒桃仁（去皮），桂枝，茯苓，赤芍，炙甘草，枳实，柴胡，清半夏，当归，川芎，
 // 三棱、莪术、水蛭（炒）、海藻、醋鳖甲
+
+// 活络丹

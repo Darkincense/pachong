@@ -38,12 +38,12 @@ connection.connect();
     let count = 0;
     for (let index = 0; index < arr.length; index++) {
       const arrItem = arr[index];
-      if(lodash.includes(str, arrItem)) {
+      if (lodash.includes(str, arrItem)) {
         count++
       }
     }
-    if(count/allDataNumber >= 0.5) return true;
-    if(allDataNumber.length === 0) return true;
+    if (count / allDataNumber >= 0.5) return true;
+    if (allDataNumber.length === 0) return true;
     return false;
   }
 
@@ -57,8 +57,8 @@ connection.connect();
     let sql1 = "SELECT * FROM `fangji_children` WHERE ";
     for (let index = 0; index < zhengzhuang.length; index++) {
       const itemData = zhengzhuang[index];
-      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
-      if(index < zhengzhuang.length - 1) sql1 += ` ${type} `;
+      sql1 += "`functional_indications` LIKE '%" + itemData + "%'";
+      if (index < zhengzhuang.length - 1) sql1 += ` ${type} `;
     }
     sql1 += " LIMIT 0, 10000";
     const allData = await getData(sql1);
@@ -76,16 +76,16 @@ connection.connect();
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
       // sql += "`name` LIKE '%"+ itemData +"%'";
-      sql += "`name` LIKE '"+ itemData +"'";
-      if(index < list.length - 1) sql += " OR";
+      sql += "`name` LIKE '" + itemData + "'";
+      if (index < list.length - 1) sql += " OR";
     }
     const allData = await getData(sql);
 
     let sql1 = "SELECT p_id,name,properties_flavor,attribution,functional_indications FROM `zhongyao_children` WHERE `p_id` in (";
     for (let index = 0; index < allData.length; index++) {
       const itemData = allData[index];
-      sql1 += "'"+ itemData.id +"'";
-      if(index < allData.length - 1) sql1 += ",";
+      sql1 += "'" + itemData.id + "'";
+      if (index < allData.length - 1) sql1 += ",";
     }
     sql1 += ")";
 
@@ -99,7 +99,7 @@ connection.connect();
       }
       for (let idx2 = 0; idx2 < allData1.length; idx2++) {
         const itemAllData1 = allData1[idx2];
-        if(tempObj.id === itemAllData1.p_id) {
+        if (tempObj.id === itemAllData1.p_id) {
           tempObj['children'].push(itemAllData1);
         }
       }
@@ -116,17 +116,17 @@ connection.connect();
    * 药物的气味转化成具体数字
    */
   const getPropertiesFlavorNum = (properties_flavor) => {
-    if(properties_flavor.indexOf('大寒') > -1) return -4;
-    if(properties_flavor.indexOf('寒') > -1 && properties_flavor.indexOf('大寒') === -1) return -3;
-    if(properties_flavor.indexOf('微寒') > -1) return -2;
-    if(properties_flavor.indexOf('凉') > -1) return -1;
-    
-    if(properties_flavor.indexOf('平') > -1) return 0;
+    if (properties_flavor.indexOf('大寒') > -1) return -4;
+    if (properties_flavor.indexOf('寒') > -1 && properties_flavor.indexOf('大寒') === -1) return -3;
+    if (properties_flavor.indexOf('微寒') > -1) return -2;
+    if (properties_flavor.indexOf('凉') > -1) return -1;
 
-    if(properties_flavor.indexOf('微温') > -1) return 1;
-    if(properties_flavor.indexOf('温') > -1) return 2;
-    if(properties_flavor.indexOf('热') > -1 && properties_flavor.indexOf('大热') === -1) return 3;
-    if(properties_flavor.indexOf('大热') > -1) return 4;
+    if (properties_flavor.indexOf('平') > -1) return 0;
+
+    if (properties_flavor.indexOf('微温') > -1) return 1;
+    if (properties_flavor.indexOf('温') > -1) return 2;
+    if (properties_flavor.indexOf('热') > -1 && properties_flavor.indexOf('大热') === -1) return 3;
+    if (properties_flavor.indexOf('大热') > -1) return 4;
   }
   /**
    * 根据药物组成查看药物的寒热温凉
@@ -134,28 +134,28 @@ connection.connect();
    * 气：大寒、寒、微寒、凉、平、微温、温、热、大热 (-4,-3,-2,-1,0,1,2,3,4)
    * 味：酸、苦、肝、辛、咸
    */
-    const getFangXing = async (fangjizucheng) => {
-      const allData = await getInfoByTCMname(fangjizucheng);
-      
-      for (let i = 0; i < allData.length; i++) {
-        const ele = allData[i];
-        const tempArr = [];
-        for (let j = 0; j < ele.children.length; j++) {
-          const item = ele.children[j];
-          const properties_flavor = item.properties_flavor;
-          if(properties_flavor) {
-            tempArr.push(getPropertiesFlavorNum(properties_flavor));
-          }
+  const getFangXing = async (fangjizucheng) => {
+    const allData = await getInfoByTCMname(fangjizucheng);
+
+    for (let i = 0; i < allData.length; i++) {
+      const ele = allData[i];
+      const tempArr = [];
+      for (let j = 0; j < ele.children.length; j++) {
+        const item = ele.children[j];
+        const properties_flavor = item.properties_flavor;
+        if (properties_flavor) {
+          tempArr.push(getPropertiesFlavorNum(properties_flavor));
         }
-        const totle = tempArr.reduce((totle, cur) => totle*1 + cur*1, 0);
-
-        console.log(ele.name, totle/tempArr.length);
       }
-
-      let writerStream = fs.createWriteStream('searchResult.json');
-      writerStream.write(JSON.stringify(allData), 'UTF8');
-      writerStream.end();
+      const totle = tempArr.reduce((totle, cur) => totle * 1 + cur * 1, 0);
+      const pingjun = totle / tempArr.length;
+      console.log(ele.name, pingjun);
     }
+
+    let writerStream = fs.createWriteStream('searchResult.json');
+    writerStream.write(JSON.stringify(allData), 'UTF8');
+    writerStream.end();
+  }
 
   /**
    * 根据主治方向查询对应药物
@@ -164,13 +164,13 @@ connection.connect();
    */
   const searchZhongYao = async (list, attribution = '') => {
     let sql1 = "SELECT * FROM `zhongyao_children` WHERE ";
-    if(attribution) {
-      sql1 += "`attribution` LIKE '%"+ attribution +"%' AND ";
+    if (attribution) {
+      sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";
     }
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
-      sql1 += "`functional_indications` LIKE '%"+ itemData +"%'";
-      if(index < list.length - 1) sql1 += " AND";
+      sql1 += "`functional_indications` LIKE '%" + itemData + "%'";
+      if (index < list.length - 1) sql1 += " AND";
     }
     const allData = await getData(sql1);
     let writerStream = fs.createWriteStream('searchResult.json');
@@ -187,7 +187,7 @@ connection.connect();
     FROM fangji_children
     WHERE `;
     for (let index = 0; index < list.length; index++) {
-      if(index > 0) sql1 += ` AND `
+      if (index > 0) sql1 += ` AND `
       sql1 += `prescription LIKE '%${list[index]}%'`
     }
     const allData = await getData(sql1);
@@ -205,11 +205,11 @@ connection.connect();
       const allData = await getData(sql);
       const nameList = allData.map(item => item.name);
       console.log(nameList);
-      if(nameList.length === 0 || isDirect) {
+      if (nameList.length === 0 || isDirect) {
         await getFangjiBy([explain], 'OR');
       }
       return nameList;
-    } catch(error) {
+    } catch (error) {
       return [];
     }
   }
@@ -217,11 +217,32 @@ connection.connect();
   // 根据药物数组获取方性
   // const fangjizucheng = ['肉苁蓉'];
   // const fangjizucheng = ['牡丹', '桃仁', '桂枝', '茯苓', '赤芍', '炙甘草', '枳实', '柴胡', '海藻', '当归', '清半夏', '三棱', '莪术', '水蛭'];
+  const fangjizucheng = [
+    "附子",
+    "熟地黄",
+    "山萸肉",
+    "山药",
+    "茯苓",
+    "泽泻",
+    "丹皮",
+    "五味子",
+    "枸杞子",
+    "沙苑子",
+    "决明子",
+    "青葙子",
+    "茺蔚子",
+    "菟丝子",
+    "覆盆子",
+    "车前子",
+    "龟版",
+    "灵磁石",
+    "沉香",
+  ]
   // await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
   // const arrList = ['熟地黄', '山萸肉', '山药','茯苓','泽泻','丹皮','五味子','枸杞子','沙苑子','决明子','青葙子','茺蔚子','菟丝子','覆盆子','车前子' ]
-  // await getInfoByTCMname(arrList);
+  await getInfoByTCMname(fangjizucheng);
 
   // 根据治疗原则查询对应中药
   // const zhengzhuang = ['石淋'];
@@ -235,11 +256,11 @@ connection.connect();
   // const zhengzhuang = ['聤耳'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  const isDirect = true;
-  const zhengzhuang = await getChineseNameByCurName('聤耳', isDirect);
-  if(zhengzhuang.length > 0 && !isDirect) {
-    await getFangjiBy(zhengzhuang, 'OR');
-  }
+  // const isDirect = true;
+  // const zhengzhuang = await getChineseNameByCurName('聤耳', isDirect);
+  // if(zhengzhuang.length > 0 && !isDirect) {
+  //   await getFangjiBy(zhengzhuang, 'OR');
+  // }
 
   // 根据中药名称查询包含该中药的所有方剂
   // await getFangjiByName(['侧柏叶', '何首乌']);

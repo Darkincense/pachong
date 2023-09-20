@@ -224,7 +224,7 @@ connection.connect();
   // await getInfoByTCMname(arrList);
 
   // 根据治疗原则查询对应中药
-  // const zhengzhuang = ['癥瘕'];
+  // const zhengzhuang = ['石淋'];
   // await searchZhongYao(zhengzhuang);
 
   // 根据症状数组获取对应方剂
@@ -234,14 +234,15 @@ connection.connect();
   // const zhengzhuang = ['糖尿病'];
   // const zhengzhuang = ['聤耳'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
-  const isDirect = false;
-  const zhengzhuang = await getChineseNameByCurName('脱发', isDirect);
+
+  const isDirect = true;
+  const zhengzhuang = await getChineseNameByCurName('聤耳', isDirect);
   if(zhengzhuang.length > 0 && !isDirect) {
     await getFangjiBy(zhengzhuang, 'OR');
   }
 
   // 根据中药名称查询包含该中药的所有方剂
-  // await getFangjiByName(['附子', '干姜']);
+  // await getFangjiByName(['侧柏叶', '何首乌']);
 
   connection.end();
 })()

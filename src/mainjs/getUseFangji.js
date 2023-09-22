@@ -229,7 +229,7 @@ connection.connect();
     // "牡丹皮",
     // "远志",
     // "明矾",
-    "枯矾",
+    "龟版",
   ]
   // await getFangXing(fangjizucheng);
 

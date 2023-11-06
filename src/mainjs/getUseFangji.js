@@ -3,6 +3,33 @@ const lodash = require('lodash');
 const fs = require('fs');
 const mainBigData = require('./dazhongyi.json');
 const mainData = require('./mainDataFile.json');
+// 引入 Node.js 的内置模块
+// const Vector = require('vector-object');
+
+// // 计算余弦相似性
+// function calculateCosineSimilarity(text1, text2) {
+//   // 将文本分词并去掉标点符号等特殊字符
+//   const words1 = text1.split(/\W+/).filter(word => word.length > 0);
+//   const words2 = text2.split(/\W+/).filter(word => word.length > 0);
+
+//   // 创建文本的词频向量
+//   const vector1 = new Vector(words1);
+//   const vector2 = new Vector(words2);
+
+//   // 计算余弦相似性
+//   const similarity = vector1.cosineSimilarity(vector2);
+
+//   return similarity;
+// }
+
+// // 两段文本
+// const text1 = "这是示例文本一。";
+// const text2 = "这是示例文本二。";
+// console.log('Vector', Vector);
+// // 计算文本相似性
+// const similarity = calculateCosineSimilarity(text1, text2);
+
+// console.log(`文本相似性：${similarity}`);
 
 const connection = mysql.createConnection({
   // host: '127.0.0.1',
@@ -136,7 +163,7 @@ connection.connect();
    */
   const getFangXing = async (fangjizucheng) => {
     const allData = await getInfoByTCMname(fangjizucheng);
-
+    let tempCount = 0;
     for (let i = 0; i < allData.length; i++) {
       const ele = allData[i];
       const tempArr = [];
@@ -150,7 +177,9 @@ connection.connect();
       const totle = tempArr.reduce((totle, cur) => totle * 1 + cur * 1, 0);
       const pingjun = totle / tempArr.length;
       console.log(ele.name, pingjun);
+      tempCount += pingjun;
     }
+    console.log('最终结果', tempCount);
 
     let writerStream = fs.createWriteStream('searchResult.json');
     writerStream.write(JSON.stringify(allData), 'UTF8');
@@ -163,7 +192,7 @@ connection.connect();
    * @param {*} attribution 药物归经
    */
   const searchZhongYao = async (list, attribution = '') => {
-    let sql1 = "SELECT * FROM `zhongyao_children` WHERE ";
+    let sql1 = "SELECT name,properties_flavor,functional_indications,attribution FROM `zhongyao_children` WHERE ";
     if (attribution) {
       sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";
     }
@@ -217,29 +246,32 @@ connection.connect();
   // 根据药物数组获取方性
   // const fangjizucheng = ['肉苁蓉'];
   // const fangjizucheng = ['牡丹', '桃仁', '桂枝', '茯苓', '赤芍', '炙甘草', '枳实', '柴胡', '海藻', '当归', '清半夏', '三棱', '莪术', '水蛭'];
-  const fangjizucheng = [
-    // "党参",
-    // "石菖蒲",
-    // "茯苓",
-    // "泽泻",
-    // "五味子",
-    // "麦冬",
-    // "枸杞",
-    // "当归",
-    // "牡丹皮",
-    // "远志",
-    // "明矾",
-    "龟版",
-  ]
-  // await getFangXing(fangjizucheng);
+//   const fangjizucheng = [
+//     "干地黄",
+//     "怀山药",
+//     "山茱萸",
+//     "泽泻",
+//     "茯苓",
+//     "牡丹皮",
+//     "桂枝",
+//     "附子",
+//     "麦门冬",
+//     "五味子",
+//     "柴胡",
+//     "桃仁",
+//     "赤芍"
+// ]
+//   await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
   // const arrList = ['熟地黄', '山萸肉', '山药','茯苓','泽泻','丹皮','五味子','枸杞子','沙苑子','决明子','青葙子','茺蔚子','菟丝子','覆盆子','车前子' ]
-  await getInfoByTCMname(fangjizucheng);
+  // const arrList = ['侧柏叶'];
+  // await getInfoByTCMname(arrList);
 
   // 根据治疗原则查询对应中药
   // const zhengzhuang = ['石淋'];
-  // await searchZhongYao(zhengzhuang);
+  // const zhengzhuang = ['温中'];
+  // await searchZhongYao(zhengzhuang, '胃');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -247,16 +279,22 @@ connection.connect();
   // const zhengzhuang = ['补血', '活血'];
   // const zhengzhuang = ['糖尿病'];
   // const zhengzhuang = ['聤耳'];
+  // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  // const isDirect = true;
-  // const zhengzhuang = await getChineseNameByCurName('聤耳', isDirect);
-  // if(zhengzhuang.length > 0 && !isDirect) {
-  //   await getFangjiBy(zhengzhuang, 'OR');
-  // }
+  const isDirect = true;
+  const zhengzhuang = await getChineseNameByCurName('息肉', isDirect);
+  if(zhengzhuang.length > 0 && !isDirect) {
+    await getFangjiBy(zhengzhuang, 'OR');
+  }
 
   // 根据中药名称查询包含该中药的所有方剂
-  // await getFangjiByName(['侧柏叶', '何首乌']);
+  // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
+  // const tempArrange = ['当归', '附子'];
+  // await getFangjiByName(tempArrange);
+
+  // 两种方剂组合到一起
+
 
   connection.end();
 })()

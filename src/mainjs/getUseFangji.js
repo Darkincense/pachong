@@ -261,6 +261,22 @@ connection.connect();
 //     "桃仁",
 //     "赤芍"
 // ]
+// const fangjizucheng = [
+//   "当归",
+//   "桂枝",
+//   "细辛",
+//   "炙甘草",
+//   "大枣",
+//   "小茴香",
+//   "干姜",
+//   "延胡索",
+//   "官桂",
+//   "没药",
+//   "川芎",
+//   "炒赤芍",
+//   "五灵脂",
+//   "蒲黄"
+// ]
 //   await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
@@ -282,16 +298,17 @@ connection.connect();
   // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  const isDirect = true;
-  const zhengzhuang = await getChineseNameByCurName('息肉', isDirect);
-  if(zhengzhuang.length > 0 && !isDirect) {
-    await getFangjiBy(zhengzhuang, 'OR');
-  }
+  // const isDirect = true;
+  // const zhengzhuang = await getChineseNameByCurName('盆腔炎', isDirect);
+  // if(zhengzhuang.length > 0 && !isDirect) {
+  //   await getFangjiBy(zhengzhuang, 'OR');
+  // }
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
-  // const tempArrange = ['当归', '附子'];
-  // await getFangjiByName(tempArrange);
+  // const tempArrange = ['白术', '山药', '茯苓', '炮附子'];
+  const tempArrange = ['茯苓', '桂枝', '白术', '甘草'];
+  await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 

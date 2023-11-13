@@ -245,7 +245,7 @@ const errorArr = [];
     for (let index = 0; index < allData.length; index++) {
       try {
         // 数据库最后一个id的值
-        if(index >= 90) {
+        if(index >= 195) {
           const itemData = allData[index];
           // 方剂插入数据库
           console.log(`运行中: ${index + 1}/${allData.length}`);
@@ -289,7 +289,7 @@ const errorArr = [];
               try {
                 await insertData([itemChildren.linchuangyingyong, itemChildren.id], `${index+1}_${index1+1}`, updateQuery);
                 console.log('插入子项成功'+`${index+1}_${index1+1}`);
-                console.log(`${itemChildren.linchuangyingyong}`);
+                // console.log(`${itemChildren.linchuangyingyong}`);
               } catch(error) {
                 console.log(error);
               }

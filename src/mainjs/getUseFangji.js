@@ -299,7 +299,7 @@ connection.connect();
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
   const isDirect = true;
-  const zhengzhuang = await getChineseNameByCurName([''], isDirect);
+  const zhengzhuang = await getChineseNameByCurName(['上热下寒'], isDirect);
   if(zhengzhuang.length > 0 && !isDirect) {
     await getFangjiBy(zhengzhuang, 'OR');
   }

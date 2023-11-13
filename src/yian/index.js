@@ -4,6 +4,7 @@ const lodash = require('lodash');
 const readline = require('readline');
 const mysql = require('mysql');
 const mainData = require('./allDatamulu.json');
+const allAllPageArr = require('./allPageArr.json');
 
 const tableName = `yian`;
 const connection = mysql.createConnection({
@@ -100,32 +101,36 @@ const errorArr = [];
 
   /* 获取每个页面的全部展开的页面链接 */
   const getAllPageUrl = async (lists) => {
-    const allPageArr = [];
+    const allPageArr = allAllPageArr;
     for (let index = 0; index < lists.length; index++) {
-      const item = lists[index];
-      
-      for(let keyName in item) {
-        const keyValue = item[keyName];
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        await newPage.goto(keyValue);
-        console.log(keyValue);
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        // const itemUl = await newPage.waitForSelector('#gather-content');
-        const itemUl = await newPage.waitForSelector('#catalog-info');
-        const curData = await itemUl.evaluate(async e => {
-          // console.log(e.children[0].href);
-          return e.children[0].href;
-        })
-        allPageArr.push(curData);
-        // console.log(curData);
-        await newPage.goBack();
-      }
+      if(index >= 4) {
+        const item = lists[index];
+        console.log(`运行中: ${index + 1}/${lists.length}`);
+        for(let keyName in item) {
+          const keyValue = item[keyName];
+          await new Promise((resolve) => setTimeout(resolve, 200));
+          try {
+            console.log(keyValue);
+            await newPage.goto(keyValue);
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            const itemUl = await newPage.waitForSelector('#catalog-info');
+            const curData = await itemUl.evaluate(async e => {
+              return e.children[0].href;
+            })
+            allPageArr.push(curData);
+          } catch(error) {
+            console.log(error);
+          }
 
+          await newPage.goBack();
+        }
+        
+        let writerStream = fs.createWriteStream('./allPageArr.json');
+        writerStream.write(JSON.stringify(allPageArr), 'UTF8');
+        writerStream.end();
+      }
     }
 
-    let writerStream = fs.createWriteStream('./allPageArr.json');
-    writerStream.write(JSON.stringify(allPageArr), 'UTF8');
-    writerStream.end();
   }
 
   const initData = async () => {
@@ -157,7 +162,6 @@ const errorArr = [];
         // console.log(`运行中: ${index + 1}/${allData.length}`);
         await new Promise((resolve) => setTimeout(resolve, 100));
         await newPage.goto(itemUrl);
-        console.log(itemUrl);
         await new Promise((resolve) => setTimeout(resolve, 500));
         const itemUl = await newPage.waitForSelector('#list-content');
         const curData = await itemUl.evaluate(async (e) => {

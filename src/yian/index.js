@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const mainData = require('./allDatamulu.json');
 const allAllPageArr = require('./allPageArr.json');
 
-const tableName = `yian`;
+const tableName = `books`;
 const connection = mysql.createConnection({
   // host: '127.0.0.1',
   host: '124.222.84.37',
@@ -20,6 +20,7 @@ connection.connect();
 const errorArr = [];
 (async () => {
   let allData = mainData;
+  const tempBigTextArr = [];
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: {
@@ -49,86 +50,110 @@ const errorArr = [];
 
 
   /* 一个页面内爬取 */
-  const onlyOnePage = async (url) => {
-    await newPage.goto(url);
+  const onlyOnePage = async (Bigitem, idx) => {
     await new Promise((resolve) => setTimeout(resolve, 500));
+    await newPage.goto(Bigitem.href);
+    await new Promise((resolve) => setTimeout(resolve, 300));
     const itemUl = await newPage.waitForSelector('#content');
     const curData = await itemUl.evaluate(async (e) => {
 
       const tempArr = [];
-      for (let idx = 0; idx < e.children.length; idx++) {
-        const item = e.children[idx];
-        const tempObj = {
-          name: item.children[0].innerText,
-        }
 
-        if (item.children.length > 1) {
-          let extractedArray = [];
-          try {
-            extractedArray = Array.from(item.children).slice(1);
-          } catch (error) { }
-
-          tempObj.content = ``;
-          for (let j = 0; j < extractedArray.length; j++) {
-            const chilItem = extractedArray[j];
-            // tempObj.content += `${chilItem.innerText}`;
-            tempObj.content += `${chilItem.innerHTML}`;
-            if (j < extractedArray.length - 1) tempObj.content += ` | `;
+      try {
+        aa:
+        for (let idx = 0; idx < e.children.length; idx++) {
+          const item = e.children[idx];
+          const tempObj = {
+            sub_title: item.children[0].innerText,
           }
-
+  
+          if (item.children.length > 1) {
+            let extractedArray = [];
+            try {
+              extractedArray = Array.from(item.children).slice(1);
+            } catch (error) { }
+  
+            tempObj.content = ``;
+            for (let j = 0; j < extractedArray.length; j++) {
+              const chilItem = extractedArray[j];
+              
+              tempObj.content += `${chilItem.innerHTML}`;
+              if (j < extractedArray.length - 1) tempObj.content += ` | `;
+            }
+          }
+          tempArr.push(tempObj);
         }
-        tempArr.push(tempObj);
+      } catch(error) {
+        tempArr.push({
+          content: `${e.innerHTML}`
+        });
       }
-
       return tempArr;
     })
 
-    lodash.remove(curData, (item) => {
-      return !item.content;
-    });
-    let writerStream = fs.createWriteStream('./yian_temp.json');
-    writerStream.write(JSON.stringify(curData), 'UTF8');
-    writerStream.end();
     for (let index = 0; index < curData.length; index++) {
       const item = curData[index];
-      const id = index + 1;
-      lodash.set(item, 'id', id);
+      const timestep = (+new Date()).toString().slice(-6);
+      const id = lodash.toNumber(`${idx + 1}${timestep}`);
+      lodash.set(item, 'book_name', `${Bigitem.book_name}`);
+      lodash.set(item, 'id', `${id}`);
+      lodash.set(item, 'p_id', `${idx + 1}`);
       // 插入子数据
-      await insertData(item, `${id}`, 'INSERT INTO ' + tableName + ' SET ?');
+      try {
+        if(item.content && item.content.length > 16000) {
+          // console.log(item.content.length);
+          lodash.set(item, 'big_content', item.content);
+          delete item.content;
+          await insertData(item, `${id}`, 'INSERT INTO ' + tableName + ' SET ?');
+        } else {
+          await insertData(item, `${id}`, 'INSERT INTO ' + tableName + ' SET ?');
+        }
+      } catch(error) {
+        console.log(`报错：${id}`);
+        console.log(error);
+      }
     }
-
   }
 
   /* 获取每个页面的全部展开的页面链接 */
   const getAllPageUrl = async (lists) => {
-    const allPageArr = allAllPageArr;
+    const allPageArr = [];
     for (let index = 0; index < lists.length; index++) {
-      if(index >= 4) {
-        const item = lists[index];
-        console.log(`运行中: ${index + 1}/${lists.length}`);
-        for(let keyName in item) {
-          const keyValue = item[keyName];
+      const item = lists[index];
+      console.log(`运行中: ${index + 1}/${lists.length}`);
+      for(let keyName in item) {
+        const keyValue = item[keyName];
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        try {
+          await newPage.goto(keyValue);
           await new Promise((resolve) => setTimeout(resolve, 200));
-          try {
-            console.log(keyValue);
-            await newPage.goto(keyValue);
-            await new Promise((resolve) => setTimeout(resolve, 200));
-            const itemUl = await newPage.waitForSelector('#catalog-info');
-            const curData = await itemUl.evaluate(async e => {
-              return e.children[0].href;
-            })
-            allPageArr.push(curData);
-          } catch(error) {
-            console.log(error);
-          }
-
-          await newPage.goBack();
+          const itemUl = await newPage.waitForSelector('#catalog-info');
+          const curData = await itemUl.evaluate(async e => {
+            return {
+              href: e.children[0].href
+            };
+          })
+          lodash.set(curData, 'book_name', keyName);
+          allPageArr.push(curData);
+        } catch(error) {
+          const itemUl = await newPage.waitForSelector('#catalog-content');
+          const curData = await itemUl.evaluate(async e => {
+            return {
+              href: e.children[0].children[0].href
+            };
+          })
+          console.log('错误');
+          console.log(curData);
+          lodash.set(curData, 'book_name', keyName);
+          allPageArr.push(curData);
         }
         
-        let writerStream = fs.createWriteStream('./allPageArr.json');
-        writerStream.write(JSON.stringify(allPageArr), 'UTF8');
-        writerStream.end();
+        await newPage.goBack();
       }
+      
+      let writerStream = fs.createWriteStream('./allPageArr.json');
+      writerStream.write(JSON.stringify(allPageArr), 'UTF8');
+      writerStream.end();
     }
 
   }
@@ -187,12 +212,30 @@ const errorArr = [];
   }
 
 
+  const getPageData = async () => {
+    bb:
+    for (let index = 0; index < allAllPageArr.length; index++) {
+      if(index+1 > 805) {
+        const itemPage = allAllPageArr[index];
+        console.log(itemPage);
+        console.log(`运行中: ${index + 1}/${allAllPageArr.length}`);
+        // https://www.zysj.com.cn/lilunshuji/maijue/101.html
+        // console.log(itemPage);
+        await onlyOnePage(itemPage, index);
+        // break bb;
+      }
+    }
+  }
+
 
   // await onlyOnePage(`https://www.zysj.com.cn/lilunshuji/yideji/quanben.html`);
   // await onlyOnePage(`https://www.zysj.com.cn/lilunshuji/dingganrenyian/quanben.html`);
 
   // await initData();
-  await getAllPageUrl(allData);
+  
+  // await getAllPageUrl(allData);
+
+  await getPageData();
 
   await browser.close();
 

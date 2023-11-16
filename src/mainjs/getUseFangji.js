@@ -298,17 +298,17 @@ connection.connect();
   // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  // const isDirect = true;
-  // const zhengzhuang = await getChineseNameByCurName(['脾气虚'], isDirect);
-  // if(zhengzhuang.length > 0 && !isDirect) {
-  //   await getFangjiBy(zhengzhuang, 'OR');
-  // }
+  const isDirect = true;
+  const zhengzhuang = await getChineseNameByCurName(['失眠'], isDirect);
+  if(zhengzhuang.length > 0 && !isDirect) {
+    await getFangjiBy(zhengzhuang, 'AND');
+  }
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
   // const tempArrange = ['白术', '山药', '茯苓', '炮附子'];
-  const tempArrange = ['黄芪', '当归'];
-  await getFangjiByName(tempArrange);
+  // const tempArrange = ['黄芪', '当归'];
+  // await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 

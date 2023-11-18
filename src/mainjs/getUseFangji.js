@@ -228,14 +228,14 @@ connection.connect();
   /**
    * 根据现代定义的病名称，查找古代对应的病名
    */
-  const getChineseNameByCurName = async (explain, isDirect) => {
+  const getChineseNameByCurName = async (explain, isDirect, type) => {
     let sql = "SELECT * FROM cidian WHERE explain_content LIKE '%" + explain + "%'";
     try {
       const allData = await getData(sql);
       const nameList = allData.map(item => item.name);
       console.log(nameList);
       if (nameList.length === 0 || isDirect) {
-        await getFangjiBy([].concat(explain), 'OR');
+        await getFangjiBy([].concat(explain), type);
       }
       return nameList;
     } catch (error) {
@@ -298,8 +298,9 @@ connection.connect();
   // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
+  const zhengzhuang1 = ['肝肾阴虚'];
   const isDirect = true;
-  const zhengzhuang = await getChineseNameByCurName(['失眠'], isDirect);
+  const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   if(zhengzhuang.length > 0 && !isDirect) {
     await getFangjiBy(zhengzhuang, 'AND');
   }
@@ -307,7 +308,7 @@ connection.connect();
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
   // const tempArrange = ['白术', '山药', '茯苓', '炮附子'];
-  // const tempArrange = ['黄芪', '当归'];
+  // const tempArrange = ['柴胡', '川芎', '白芍', '茯苓', '五味子'];
   // await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起

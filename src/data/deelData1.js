@@ -47,7 +47,7 @@ function parseHerbString(inputString) {
   // const regex = /([\u4e00-\u9fa5]+[\s（]*[\u4e00-\u9fa5]*[\s）]*)[\s(（]*([一|二|三|四|五|六|七|八|九|十|\d.]+)\s*([克g两半半两钱适量]*)?[)）]*/g;
   // const regex = /([\u4e00-\u9fa5]+)[\s（]*([一|二|三|四|五|六|七|八|九|十\d.]+)[\s～]*([一|二|三|四|五|六|七|八|九|十\d.]+)?\s*([克g两半半两钱]*)?[)）]*/g;
 
-  const regex = /([\u4e00-\u9fa5]+[\s（]*[\u4e00-\u9fa5]*[，|,]*[\u4e00-\u9fa5]*[\s）]*)[\s(（]*([一|二|三|四|五|六|七|八|九|十|\d.]+|[适量|少许])?[\s～]*([一|二|三|四|五|六|七|八|九|十\d.]+)?\s*([克|g|两|半两|钱|分|适量]*)?[)）]*/g;
+  const regex = /([\u4e00-\u9fa5]+[\s]*[（]*[\u4e00-\u9fa5]*[，|,]*[\u4e00-\u9fa5]*[\s]*[）]*)[\s(（]*([一|二|三|四|五|六|七|八|九|十|\d.]+|[适量|少许])?[\s～]*([一|二|三|四|五|六|七|八|九|十\d.]+)?\s*([克|g|两|半两|钱|分|适量]*)?[)）]*/g;
 
   // inputString.split(/各([一|二|三|四|五|六|七|八|九|十|\d.]+|[适量|少许])([克|g|两|半两|钱|分|适量]*)/)
 
@@ -59,15 +59,14 @@ function parseHerbString(inputString) {
       const [, a, b, c, d, input] = match;
       console.log(match);
 
-      // let tempQuanty = parseFloat(b) ? parseFloat(b) : chineseToArabic(b);
+      let tempQuanty = parseFloat(b) ? parseFloat(b) : b;
 
-      // if(c && parseFloat(c)) {
-      //   tempQuanty = `${parseFloat(b)}~${parseFloat(c)}`
-      //   return { a, quantity: tempQuanty, unit: d };
-      // }
+      if(c && parseFloat(c)) {
+        tempQuanty = `${parseFloat(b)}~${parseFloat(c)}`
+        return { a, quantity: tempQuanty, unit: d };
+      }
 
       return { a, quantity: b, unit: c };
-
   });
 
   return herbs;
@@ -81,20 +80,20 @@ const input4 = "磁石（煅）20g 熟地黄160g 山茱萸（制）80g 牡丹皮
 const input5 = "磁石二两、熟地黄八两、山茱萸四两、牡丹皮三两、山药四两、茯苓三两、泽泻三两、北五味子五钱、石菖蒲一两半。";
 const input6 = "藜芦（净洗，焙）蛇床子（去土）红丹（火飞）各15克 硫黄 赤石脂 明矾 （火飞）五倍子（去内虫屑）黄柏（去粗皮）各6克 轻粉少许";
 
-// const result1 = parseHerbString(input1);
-// const result2 = parseHerbString(input2);
-// const result3 = parseHerbString(input3);
-// const result4 = parseHerbString(input4);
-// const result5 = parseHerbString(input5);
+const result1 = parseHerbString(input1);
+const result2 = parseHerbString(input2);
+const result3 = parseHerbString(input3);
+const result4 = parseHerbString(input4);
+const result5 = parseHerbString(input5);
 const result6 = parseHerbString(input6);
 
 console.log('==============');
-// console.log(result1);
-// console.log(result2);
-// console.log(result3);
-// console.log(result4);
-// console.log(result5);
-// console.log(result6);
+console.log(result1);
+console.log(result2);
+console.log(result3);
+console.log(result4);
+console.log(result5);
+console.log(result6);
 
 // const regex1 = /([\u4e00-\u9fa5]+)适量/;
 // const input9 = "白糖适量";

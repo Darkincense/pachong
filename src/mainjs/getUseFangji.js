@@ -3,6 +3,7 @@ const lodash = require('lodash');
 const fs = require('fs');
 const mainBigData = require('./dazhongyi.json');
 const mainData = require('./mainDataFile.json');
+// const parseHerbString = require('../data/deelData1.js');
 // 引入 Node.js 的内置模块
 // const Vector = require('vector-object');
 
@@ -74,6 +75,7 @@ connection.connect();
     return false;
   }
 
+
   /**
    * 通过治疗原则获取对应的方剂
    * @param {*} zhengzhuang 
@@ -89,9 +91,15 @@ connection.connect();
     }
     sql1 += " LIMIT 0, 10000";
     const allData = await getData(sql1);
-    let writerStream = fs.createWriteStream('searchResult.json');
-    writerStream.write(JSON.stringify(allData), 'UTF8');
-    writerStream.end();
+    // const tempAllData = allData.map(item => {
+    //   return {
+    //     ...item,
+    //     prescription1: parseHerbString.parseHerbString(item.prescription)
+    //   }
+    // })
+    // let writerStream = fs.createWriteStream('searchResult.json');
+    // writerStream.write(JSON.stringify(tempAllData), 'UTF8');
+    // writerStream.end();
   }
 
   /**
@@ -272,6 +280,7 @@ connection.connect();
   // 根据治疗原则查询对应中药
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
+  // const zhengzhuang = ['小儿', '荨麻疹'];
   // await searchZhongYao(zhengzhuang);
 
   // 根据症状数组获取对应方剂
@@ -283,18 +292,20 @@ connection.connect();
   // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  const zhengzhuang1 = ['荨麻疹'];
-  const isDirect = true;
-  const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
-  if(zhengzhuang.length > 0 && !isDirect) {
-    await getFangjiBy(zhengzhuang, 'AND');
-  }
+  // const zhengzhuang1 = ['荨麻疹'];
+  // const isDirect = true;
+  // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
+  // if(zhengzhuang.length > 0 && !isDirect) {
+  //   await getFangjiBy(zhengzhuang1, 'AND');
+  // }
+  // await getFangjiBy(zhengzhuang1, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
   // const tempArrange = ['白术', '山药', '茯苓', '炮附子'];
   // const tempArrange = ['柴胡', '甘草', '黄芩', '枳实'];
-  // await getFangjiByName(tempArrange);
+  const tempArrange = ['防风', '荆芥'];// 薄叶卷柏
+  await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 

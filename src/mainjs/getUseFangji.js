@@ -261,8 +261,8 @@ connection.connect();
 //     "桃仁",
 //     "赤芍"
 // ]
-  const fangjizucheng = ["金钱草", "海金沙", "五倍子", "玉米须", "柴胡", "枳实", "黄芩", "炙甘草", "鸡内金", "郁金"]
-  await getFangXing(fangjizucheng);
+  // const fangjizucheng = ["金钱草", "海金沙", "五倍子", "玉米须", "柴胡", "枳实", "黄芩", "炙甘草", "鸡内金", "郁金"]
+  // await getFangXing(fangjizucheng);
 
   // 批量查询药物信息
   // const arrList = ['熟地黄', '山萸肉', '山药','茯苓','泽泻','丹皮','五味子','枸杞子','沙苑子','决明子','青葙子','茺蔚子','菟丝子','覆盆子','车前子' ]
@@ -283,12 +283,12 @@ connection.connect();
   // const zhengzhuang = ['牙宣'];
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
-  // const zhengzhuang1 = ['肝肾阴虚'];
-  // const isDirect = true;
-  // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
-  // if(zhengzhuang.length > 0 && !isDirect) {
-  //   await getFangjiBy(zhengzhuang, 'AND');
-  // }
+  const zhengzhuang1 = ['荨麻疹'];
+  const isDirect = true;
+  const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
+  if(zhengzhuang.length > 0 && !isDirect) {
+    await getFangjiBy(zhengzhuang, 'AND');
+  }
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];

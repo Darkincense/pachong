@@ -304,7 +304,8 @@ connection.connect();
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
   // const tempArrange = ['白术', '山药', '茯苓', '炮附子'];
   // const tempArrange = ['柴胡', '甘草', '黄芩', '枳实'];
-  const tempArrange = ['防己', '附子', '桂枝'];// 薄叶卷柏
+  // const tempArrange = ['防己', '附子', '桂枝'];// 薄叶卷柏
+  const tempArrange = ['白芍', '熟地', '当归'];
   await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起

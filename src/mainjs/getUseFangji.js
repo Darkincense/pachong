@@ -293,13 +293,13 @@ connection.connect();
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
   // const zhengzhuang1 = ['心肾不交'];
-  // const zhengzhuang1 = ['心胆气虚'];
+  const zhengzhuang1 = ['养肝'];
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  // await getFangjiBy(zhengzhuang1, 'AND');
+  await getFangjiBy(zhengzhuang1, 'AND');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
@@ -308,8 +308,8 @@ connection.connect();
   // const tempArrange = ['防己', '附子', '桂枝'];// 薄叶卷柏
   // const tempArrange = ['白芍', '熟地', '当归'];
   // const tempArrange = [`酸枣仁`,`茯神`,`石菖蒲`,`当归`, `龙骨`];
-  const tempArrange = [`柴胡`, '半夏', '香附'];
-  await getFangjiByName(tempArrange);
+  // const tempArrange = ['白芍', '人参'];
+  // await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 

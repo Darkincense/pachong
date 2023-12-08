@@ -280,8 +280,8 @@ connection.connect();
   // 根据治疗原则查询对应中药
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
-  const zhengzhuang = ['活血', '祛瘀'];
-  await searchZhongYao(zhengzhuang, '肝');
+  // const zhengzhuang = ['活血', '祛瘀'];
+  // await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -293,13 +293,13 @@ connection.connect();
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
   // const zhengzhuang1 = ['心肾不交'];
-  // const zhengzhuang1 = ['养肝'];
+  const zhengzhuang1 = ['保胎', '安胎'];
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  // await getFangjiBy(zhengzhuang1, 'AND');
+  await getFangjiBy(zhengzhuang1, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];

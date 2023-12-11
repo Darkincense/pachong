@@ -199,15 +199,16 @@ connection.connect();
    * @param {*} list 主治功能列表 ls：['燥湿化痰']
    * @param {*} attribution 药物归经
    */
-  const searchZhongYao = async (list, attribution = '') => {
+  const searchZhongYao = async (list, attribution = '', type = 'OR') => {
     let sql1 = "SELECT name,properties_flavor,functional_indications,attribution FROM `zhongyao_children` WHERE ";
     if (attribution) {
-      sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";
+      sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";  // 药物归经
     }
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
-      sql1 += "`functional_indications` LIKE '%" + itemData + "%'";
-      if (index < list.length - 1) sql1 += " AND";
+      sql1 += "`functional_indications` LIKE '%" + itemData + "%'";  // 根据药物的功能搜索
+      // sql1 += "`properties_flavor` LIKE '%" + itemData + "%'";  // 根据药的四气五味查询，温热寒凉，酸苦甘辛咸
+      if (index < list.length - 1) sql1 += " "+type+"";
     }
     const allData = await getData(sql1);
     let writerStream = fs.createWriteStream('searchResult.json');
@@ -280,8 +281,9 @@ connection.connect();
   // 根据治疗原则查询对应中药
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
-  // const zhengzhuang = ['活血', '祛瘀'];
-  // await searchZhongYao(zhengzhuang, '肝');
+  // const zhengzhuang = ['辛', '温'];  , '补血'
+  const zhengzhuang = ['补血'];
+  await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -293,13 +295,13 @@ connection.connect();
   // const zhengzhuang = [ '发落', '毛拔', '油风'];
 
   // const zhengzhuang1 = ['心肾不交'];
-  const zhengzhuang1 = ['保胎', '安胎'];
+  // const zhengzhuang1 = ['保胎', '安胎'];
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  await getFangjiBy(zhengzhuang1, 'OR');
+  // await getFangjiBy(zhengzhuang1, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];

@@ -282,8 +282,8 @@ connection.connect();
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
   // const zhengzhuang = ['辛', '温'];  , '补血'
-  const zhengzhuang = ['补血'];
-  await searchZhongYao(zhengzhuang, '肝');
+  // const zhengzhuang = ['补血'];
+  // await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -310,8 +310,8 @@ connection.connect();
   // const tempArrange = ['防己', '附子', '桂枝'];// 薄叶卷柏
   // const tempArrange = ['白芍', '熟地', '当归'];
   // const tempArrange = [`酸枣仁`,`茯神`,`石菖蒲`,`当归`, `龙骨`];
-  // const tempArrange = ['白芍', '人参'];
-  // await getFangjiByName(tempArrange);
+  const tempArrange = ['熟地黄', '茺蔚子', '覆盆子'];
+  await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 

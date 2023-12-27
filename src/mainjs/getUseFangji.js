@@ -296,6 +296,7 @@ connection.connect();
 
   // const zhengzhuang1 = ['心肾不交'];
   // const zhengzhuang1 = ['保胎', '安胎'];
+  // const zhengzhuang1 = ['支气管炎'];
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {
@@ -310,7 +311,8 @@ connection.connect();
   // const tempArrange = ['防己', '附子', '桂枝'];// 薄叶卷柏
   // const tempArrange = ['白芍', '熟地', '当归'];
   // const tempArrange = [`酸枣仁`,`茯神`,`石菖蒲`,`当归`, `龙骨`];
-  const tempArrange = ['熟地黄', '茺蔚子', '覆盆子'];
+  // const tempArrange = ['熟地黄', '茺蔚子', '覆盆子'];
+  const tempArrange = ['麦门冬', '白术', '茯苓', '半夏', '人参'];
   await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起

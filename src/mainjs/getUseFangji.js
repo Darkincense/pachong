@@ -282,7 +282,7 @@ connection.connect();
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
   // const zhengzhuang = ['辛', '温'];  , '补血'
-  // const zhengzhuang = ['补血'];
+  // const zhengzhuang = ['温'];
   // await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
@@ -298,8 +298,9 @@ connection.connect();
   // const zhengzhuang1 = ['保胎', '安胎'];
   // const zhengzhuang1 = ['支气管炎'];
   // const zhengzhuang1 = ['风湿寒痹', '风寒湿痹'];
-  // const zhengzhuang1 = ['齿痕'];
-  const zhengzhuang1 = ['瘿瘤'];
+  // const zhengzhuang1 = ['食积', '宿食不消'];
+  const zhengzhuang1 = ['消渴'];
+  // const zhengzhuang1 = ['瘿瘤'];
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {

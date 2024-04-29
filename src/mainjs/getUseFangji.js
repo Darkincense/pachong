@@ -299,8 +299,12 @@ connection.connect();
   // const zhengzhuang1 = ['支气管炎'];
   // const zhengzhuang1 = ['风湿寒痹', '风寒湿痹'];
   // const zhengzhuang1 = ['食积', '宿食不消'];
-  const zhengzhuang1 = ['消渴'];
+  // const zhengzhuang1 = ['消渴'];
   // const zhengzhuang1 = ['瘿瘤'];
+  const zhengzhuang1 = ['太息'];
+  // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
+  
+
   // const isDirect = true;
   // const zhengzhuang = await getChineseNameByCurName(zhengzhuang1, isDirect, 'AND');
   // if(zhengzhuang.length > 0 && !isDirect) {

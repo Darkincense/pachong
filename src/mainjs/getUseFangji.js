@@ -301,7 +301,9 @@ connection.connect();
   // const zhengzhuang1 = ['食积', '宿食不消'];
   // const zhengzhuang1 = ['消渴'];
   // const zhengzhuang1 = ['瘿瘤'];
-  const zhengzhuang1 = ['太息'];
+  // const zhengzhuang1 = ['太息'];
+  // const zhengzhuang1 = ['风厥'];
+  const zhengzhuang1 = ['瘿'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 
@@ -323,6 +325,8 @@ connection.connect();
   // const tempArrange = ['麦门冬', '白术', '茯苓', '半夏', '人参'];
   // const tempArrange = ['党参', '白术', '茯苓'];
   // const tempArrange = ['牛膝', '丹参', '当归'];
+  // const tempArrange = ['金银花','贝母','皂角刺','天花粉','知母','龙胆','昆布','升麻','连翘','苏子','夏枯草','王不留行','白花蛇舌草','半枝莲'];
+  // const tempArrange = ['柴胡','昆布','夏枯草'];
 
   // await getFangjiByName(tempArrange);
 

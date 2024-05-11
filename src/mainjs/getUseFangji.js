@@ -301,9 +301,9 @@ connection.connect();
   // const zhengzhuang1 = ['食积', '宿食不消'];
   // const zhengzhuang1 = ['消渴'];
   // const zhengzhuang1 = ['瘿瘤'];
-  // const zhengzhuang1 = ['太息'];
+  const zhengzhuang1 = ['胆囊炎'];
   // const zhengzhuang1 = ['风厥'];
-  const zhengzhuang1 = ['瘿'];
+  // const zhengzhuang1 = ['瘿'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 

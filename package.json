@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node src/mainjs/getUseFangji.js"
+    "node": "cd src/mainjs && node getUseFangji.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",

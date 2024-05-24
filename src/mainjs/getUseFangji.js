@@ -305,7 +305,8 @@ connection.connect();
   // const zhengzhuang1 = ['胆囊炎'];
   // const zhengzhuang1 = ['风厥'];
   // const zhengzhuang1 = ['瘿'];
-  const zhengzhuang1 = ['乳癖'];
+  // const zhengzhuang1 = ['乳癖'];
+  const zhengzhuang1 = ['胆囊炎'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 

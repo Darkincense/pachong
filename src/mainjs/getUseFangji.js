@@ -201,9 +201,9 @@ connection.connect();
    */
   const searchZhongYao = async (list, attribution = '', type = 'OR') => {
     let sql1 = "SELECT name,properties_flavor,functional_indications,attribution FROM `zhongyao_children` WHERE ";
-    if (attribution) {
-      sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";  // 药物归经
-    }
+    // if (attribution) {
+    //   sql1 += "`attribution` LIKE '%" + attribution + "%' AND ";  // 药物归经
+    // }
     for (let index = 0; index < list.length; index++) {
       const itemData = list[index];
       sql1 += "`functional_indications` LIKE '%" + itemData + "%'";  // 根据药物的功能搜索
@@ -282,9 +282,9 @@ connection.connect();
   // const zhengzhuang = ['胆结石'];
   // const zhengzhuang = ['温中'];
   // const zhengzhuang = ['辛', '温'];  , '补血'
-  // const zhengzhuang = ['温'];
-  // const zhengzhuang = ['下肢浮肿'];
-  // await searchZhongYao(zhengzhuang, '');
+  // const zhengzhuang = ['寒'];
+  const zhengzhuang = ['梅核气'];
+  await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -306,7 +306,8 @@ connection.connect();
   // const zhengzhuang1 = ['风厥'];
   // const zhengzhuang1 = ['瘿'];
   // const zhengzhuang1 = ['乳癖'];
-  const zhengzhuang1 = ['胆囊炎'];
+  // const zhengzhuang1 = ['胆囊炎'];
+  // const zhengzhuang1 = ['消渴'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 
@@ -315,7 +316,7 @@ connection.connect();
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  await getFangjiBy(zhengzhuang1, 'OR');
+  // await getFangjiBy(zhengzhuang1, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];

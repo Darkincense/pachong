@@ -283,7 +283,8 @@ connection.connect();
   // const zhengzhuang = ['温中'];
   // const zhengzhuang = ['辛', '温'];  , '补血'
   // const zhengzhuang = ['寒'];
-  const zhengzhuang = ['梅核气'];
+  // const zhengzhuang = ['梅核气'];
+  const zhengzhuang = ['黄疸'];
   await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
@@ -308,6 +309,7 @@ connection.connect();
   // const zhengzhuang1 = ['乳癖'];
   // const zhengzhuang1 = ['胆囊炎'];
   // const zhengzhuang1 = ['消渴'];
+  // const zhengzhuang1 = ['小儿黄疸'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 

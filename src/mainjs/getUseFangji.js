@@ -284,8 +284,8 @@ connection.connect();
   // const zhengzhuang = ['辛', '温'];  , '补血'
   // const zhengzhuang = ['寒'];
   // const zhengzhuang = ['梅核气'];
-  const zhengzhuang = ['黄疸'];
-  await searchZhongYao(zhengzhuang, '肝');
+  // const zhengzhuang = ['黄疸'];
+  // await searchZhongYao(zhengzhuang, '肝');
 
   // 根据症状数组获取对应方剂
   // const zhengzhuang = ['脾不统血'];
@@ -310,6 +310,7 @@ connection.connect();
   // const zhengzhuang1 = ['胆囊炎'];
   // const zhengzhuang1 = ['消渴'];
   // const zhengzhuang1 = ['小儿黄疸'];
+  const zhengzhuang1 = ['肾炎'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 
@@ -318,7 +319,7 @@ connection.connect();
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  // await getFangjiBy(zhengzhuang1, 'OR');
+  await getFangjiBy(zhengzhuang1, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];

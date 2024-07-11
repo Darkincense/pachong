@@ -310,7 +310,7 @@ connection.connect();
   // const zhengzhuang1 = ['胆囊炎'];
   // const zhengzhuang1 = ['消渴'];
   // const zhengzhuang1 = ['小儿黄疸'];
-  // const zhengzhuang1 = ['晕厥', '呕吐'];
+  const zhengzhuang1 = ['晕厥', '呕吐'];
   // 干呕者，胃气逆故也。但呕而欲吐，吐而无所出，故谓之干呕。
   
 
@@ -319,7 +319,7 @@ connection.connect();
   // if(zhengzhuang.length > 0 && !isDirect) {
   //   await getFangjiBy(zhengzhuang1, 'AND');
   // }
-  // await getFangjiBy(zhengzhuang1, 'AND');
+  await getFangjiBy(zhengzhuang1, 'OR');
 
   // 根据中药名称查询包含该中药的所有方剂
   // const tempArrange = ['酸枣仁', '川芎', '白术', '桂枝'];
@@ -333,9 +333,9 @@ connection.connect();
   // const tempArrange = ['党参', '白术', '茯苓'];
   // const tempArrange = ['牛膝', '丹参', '当归'];
   // const tempArrange = ['金银花','贝母','皂角刺','天花粉','知母','龙胆','昆布','升麻','连翘','苏子','夏枯草','王不留行','白花蛇舌草','半枝莲'];
-  const tempArrange = ['黄芪', '红花'];
+  // const tempArrange = ['黄芪', '红花'];
 
-  await getFangjiByName(tempArrange);
+  // await getFangjiByName(tempArrange);
 
   // 两种方剂组合到一起
 
